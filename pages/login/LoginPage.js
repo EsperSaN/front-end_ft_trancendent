@@ -1,5 +1,6 @@
 // LoginPage.js
 import { Login42Api, getCookie, setCookie, getApiToken, checkApiToken} from "./LoginAPI.js";
+
 export async	function renderLoginPage() {
     let res =  await fetch('pages/login/LoginPage.html');
 	let ress = 	   await res.text();
@@ -24,7 +25,7 @@ document.addEventListener("click", (e)=>{
 				else
 				{
 					console.log("session cookie found!!!");
-					window.location.href("http://localhost:8000/#gameMenu");
+					window.location.href = "http://localhost:8000/#gameMenu";
 				}
 			});
 		}
@@ -34,6 +35,7 @@ document.addEventListener("click", (e)=>{
 			getApiToken(codeParam)
 				.then(res => {
 					setCookie('session', res.access_token, 1);
+					console.log(res);
 					window.location.href = "http://localhost:8000/#gameMenu";
 			});
 
@@ -43,8 +45,8 @@ document.addEventListener("click", (e)=>{
 			console.log("let's go Login!!!");
 			console.log("session cookie not found!!!");
 			document.getElementById("loginOption").innerHTML = `
-			<li><a class="42login" id="42Login" href="#callback"> 42Login </a></li>
-			<li><a> Normal Login </a></li>
+					<li><a class="42login" id="42Login" href="#callback"> 42Login </a></li>
+					<li><a> Normal Login </a></li>
 			`;
 		}
 	}
