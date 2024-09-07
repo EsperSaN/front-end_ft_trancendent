@@ -8,10 +8,13 @@ export async function renderGameMenu() {
 		{
 			console.log("session cookie not error!!!");
 			setCookie("session", "", 0);
-			window.location.href = "http://localhost:8000/#Login";
 		}
 		return res;
 	}});
+	if (data == null)
+	{
+		window.location.href = "http://localhost:8000/#login";
+	}
 	console.log(data);
     return `
 	    <link href="./pages/GameMenu/GameMenu.css" rel="stylesheet">
