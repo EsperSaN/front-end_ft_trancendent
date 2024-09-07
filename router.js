@@ -6,10 +6,12 @@ import { renderPlayMenu } from './pages/PlayMenu.js';
 import { renderOptionMenu } from './pages/OptionMenu.js';
 import { renderLoginPage } from './pages/login/LoginPage.js';
 import { renderLoading} from './pages/loading/Loading.js';
+import { renderRegisterPage } from './pages/register/register.js';
 
 
 const pageRoutes = 
 {
+	'register' : renderRegisterPage,
     'gameMenu' : renderGameMenu,
     'optionMenu' : renderOptionMenu,
     'Login' : renderLoginPage,
