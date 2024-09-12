@@ -1,28 +1,32 @@
 // router.js
 
-import { renderGameMenu } from './pages/GameMenu.js';
+import { renderGameMenu } from './pages/GameMenu/GameMenu.js';
 import { renderNullPage } from './pages/NullPage.js';
 import { renderPlayMenu } from './pages/PlayMenu.js';
 import { renderOptionMenu } from './pages/OptionMenu.js';
-import { renderLoginPage } from './pages/LoginPage.js';
+import { renderLoginPage } from './pages/login/LoginPage.js';
+import { renderLoading} from './pages/loading/Loading.js';
+import { renderRegisterPage } from './pages/register/register.js';
 
 
 const pageRoutes = 
 {
+	'register' : renderRegisterPage,
     'gameMenu' : renderGameMenu,
     'optionMenu' : renderOptionMenu,
     'Login' : renderLoginPage,
-    'playMenu' : renderPlayMenu
+    'playMenu' : renderPlayMenu,
+	'callback' : renderLoading
 }
 
-function navigateTo(page, isHistoryPush = true) 
+async	function navigateTo(page, isHistoryPush = true) 
 {
     const DynamicContent = document.getElementById('DynamicContent');
     const body = document.body;
 
     // Update the layout and content based on the page
     const renderFunction = pageRoutes[page] || renderNullPage;
-    DynamicContent.innerHTML = renderFunction();
+    DynamicContent.innerHTML = await renderFunction();
 
     // Update the background class
     body.className = page;
@@ -46,7 +50,7 @@ window.onpopstate = function(event)
 // Initial load handling
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Hello!");
-    const initialPage = window.location.hash.replace('#', '') || 'gameMenu';
+    const initialPage = window.location.hash.replace('#', '') || 'Login';
     navigateTo(initialPage);
 
     // onclick handling
