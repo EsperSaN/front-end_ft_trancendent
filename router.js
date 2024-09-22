@@ -45,23 +45,19 @@ window.onpopstate = function(event)
 
 // Initial load handling
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Hello!");
+    console.log("Hello! from Initial load handling");
     const initialPage = window.location.hash.replace('#', '') || 'gameMenu';
     navigateTo(initialPage);
+});
 
-    // onclick handling
-    const menuLinks = document.querySelectorAll('.menu a'); // Select all links inside .menu
-
-    menuLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            console.log(this.getAttribute('href'))
-            if (this.getAttribute('href') == "#Back") {
-                navigateTo(event.state.page, false); // false to prevent pushing state again
-            } else {
-            event.preventDefault();
-            const targetPage = this.getAttribute('href').replace('#', '');
-            navigateTo(targetPage);
-            }
-        });
-    });
+// Onclick Handling
+document.addEventListener('click', function(event) {
+    console.log("Hello! from Onclick Handling");
+    const page = event.target.getAttribute('href').replace('#', '');
+    if (page !== 'Back'){
+        navigateTo(page);
+    }
+    else {
+        history.back();
+    }
 });
