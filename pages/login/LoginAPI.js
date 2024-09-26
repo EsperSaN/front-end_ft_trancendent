@@ -17,7 +17,7 @@ export function	setCookie(name, value, cookieLifeDay, path = "/")
 }
 
 export async function Login42Api(){
-	let Oauth42Uri = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-22f86f74faae2eeafea1996525b43eb22f4105e4b46db1cc6d647b11c5724a6d&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fauth%2Fcallback&response_type=code`;
+	let Oauth42Uri = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2F&response_type=code`;
 	console.log("Oauth42Uri = " + Oauth42Uri);
 	let requestHeader ={
 		method : 'GET',
