@@ -22,6 +22,14 @@
             return params.get(param);
         }
 
+        // Function to set a cookie
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+        }
+
         window.onload = function() {
             const code = getQueryParam('code');
             if (code) {
@@ -36,6 +44,15 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log("Response from localhost:9000/auth/callback:", data);
+                    
+                    if (data.jwt) {
+                        // Set the JWT token in a cookie
+                        setCookie('jwt', data.jwt, 7); // Expires in 7 days
+                        console.log("JWT token saved in cookies:", data.jwt);
+
+                        // Redirect to profile.html
+                        window.location.href = 'profile.html';
+                    }
                 })
                 .catch(error => console.error("Error:", error));
             }
