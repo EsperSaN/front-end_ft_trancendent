@@ -11,31 +11,28 @@ import { renderRegisterPage } from './pages/register/register.js';
 
 const pageRoutes = 
 {
-	'register' : renderRegisterPage,
-    'gameMenu' : renderGameMenu,
-    'optionMenu' : renderOptionMenu,
-    'Login' : renderLoginPage,
-    'playMenu' : renderPlayMenu,
-	'callback' : renderLoading
+	'register'      : renderRegisterPage,
+    'gameMenu'      : renderGameMenu,
+    'optionMenu'    : renderOptionMenu,
+    'Login'         : renderLoginPage,
+    'playMenu'      : renderPlayMenu,
+	'callback'      : renderLoading
 }
 
 async	function navigateTo(page, isHistoryPush = true) 
 {
-    const DynamicContent = document.getElementById('DynamicContent');
     const body = document.body;
 
     // Update the layout and content based on the page
     const renderFunction = pageRoutes[page] || renderNullPage;
-    DynamicContent.innerHTML = await renderFunction();
+    await renderFunction();
 
     // Update the background class
     body.className = page;
 
     // Push state to history for browser navigation
-    if (isHistoryPush) 
-    {
+    if (isHistoryPush) {
         history.pushState({ page: page }, page, `#${page}`);
-        console.log(history);
     }
 }
 
@@ -49,14 +46,12 @@ window.onpopstate = function(event)
 
 // Initial load handling
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Hello!");
     const initialPage = window.location.hash.replace('#', '') || 'Login';
     navigateTo(initialPage);
 });
 
 // Onclick Handling
 document.addEventListener('click', function(event) {
-    console.log("Hello! from Onclick Handling");
     event.preventDefault();
     const page = event.target.getAttribute('href').replace('#', '');
     if (page !== 'Back'){

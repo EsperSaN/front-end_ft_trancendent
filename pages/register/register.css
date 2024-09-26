@@ -1,6 +1,6 @@
 #registerBox {
 	height: auto;
-	width: 100%;
+	width: 50%;
 	border: #1e4950 3px solid;
 	border-radius: 30px;
 	background-color: rgba(146,220,253, 0.5); ;
@@ -41,4 +41,13 @@
 	height: 30px;
 	margin-top: 1%;
 	border-radius: 10px;
+}
+
+#registorHeader{
+	font-size: 40px;
+	text-align: left;
+}
+
+label {
+	text-align: left;
 }

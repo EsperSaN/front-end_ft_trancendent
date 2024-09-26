@@ -1,9 +1,10 @@
 
 export async function renderRegisterPage() {
-	let res =  await fetch('pages/register/register.html');
-	let ress = 	await res.text();
-	console.log(ress);
-	return	ress;
+	let html		= await fetch('pages/register/register.html');
+	let htmlText	= await html.text();
+
+	const element = document.querySelector('#loginOption');
+	element.innerHTML = htmlText;
 }
 
 // document.addEventListener("click", async (e)=>{

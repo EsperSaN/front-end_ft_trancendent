@@ -1,9 +1,10 @@
 //https://stackoverflow.com/questions/588040/window-onload-vs-document-onload
 //https://stackoverflow.com/questions/576535/cookie-path-and-its-accessibility-to-subfolder-pages
 //https://stackoverflow.com/questions/4825683/how-do-i-create-and-read-a-value-from-cookie-with-javascript
+
 export function	setCookie(name, value, cookieLifeDay, path = "/")
 {
-	if (cookieLifeDay >= 0){
+	if (cookieLifeDay > 0){
 		let date = new Date(Date.now() + cookieLifeDay * 24 * 60 * 60 * 1000).toUTCString(); // or 864e5
 		value = encodeURIComponent(value);
 		document.cookie = `${name}=${value}; expires=${date}; path=${path}`;
@@ -16,17 +17,18 @@ export function	setCookie(name, value, cookieLifeDay, path = "/")
 }
 
 export async function Login42Api(){
-	let Oauth42Uri = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227&redirect_uri=http%3A%2F%2Flocalhost%3A8000%2F&response_type=code`;
-	console.log(Oauth42Uri);
+	let Oauth42Uri = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-22f86f74faae2eeafea1996525b43eb22f4105e4b46db1cc6d647b11c5724a6d&redirect_uri=http%3A%2F%2Flocalhost%3A9000%2Fauth%2Fcallback&response_type=code`;
+	console.log("Oauth42Uri = " + Oauth42Uri);
 	let requestHeader ={
 		method : 'GET',
 		redirect: 'manual',
 	};
-	console.log("here");
 	fetch(Oauth42Uri, requestHeader)
 	.then(response => {
+		console.log("in res")
 		window.location.href = response.url
 		if (!response.ok){
+			console.log("respone not ok")
 			throw new Error(response.statusText)
 		}
 		console.log('Login42Api')
@@ -51,7 +53,7 @@ export function	getCookie(CookieName)
 }
 
 export function getApiToken(token){
-	let url = `http://127.0.0.1:9000/auth/callback?code=${token}`;
+	let url = `http://127.0.0.1:8000/auth/callback?code=${token}`;
 	let res = fetch(url)
 	.then(response => {
 		if (!response.ok){
@@ -85,6 +87,7 @@ export function checkApiToken(token){
 	});
 	return res;
 }
+
 // var expireDay = 7;
 // var Urlparam = getCookie('code');
 // console.log(`get cookie = ${Urlparam}`);

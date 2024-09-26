@@ -2,18 +2,20 @@
 import { Login42Api, getCookie, setCookie, getApiToken, checkApiToken} from "./LoginAPI.js";
 
 export async	function renderLoginPage() {
-    let res =  await fetch('pages/login/LoginPage.html');
-	let ress = 	   await res.text();
-	console.log(ress);
-	return	ress;
+    let html		= await fetch('pages/login/LoginPage.html');
+	let htmlText	= await html.text();
+	
+	const DynamicContent = document.getElementById('DynamicContent');
+	DynamicContent.innerHTML = htmlText;
 }
 
 
 document.addEventListener("click", (e)=>{
-	console.log("user click on ", e.target, e.target.matches("a[href='#Login']"));
-	if (e.target.matches("a[href='#Login']")) {
+	if (e.target.matches("a[href='#42Login']")) {
 		let SessionCookie = getCookie('session');
+		console.log("SessionCookie = " + SessionCookie);
 		let codeParam = new URLSearchParams(window.location.search).get('code');
+		console.log("codeParam = " + codeParam);
 		if (SessionCookie != null)
 		{
 			checkApiToken(SessionCookie).then(res => {
@@ -42,17 +44,8 @@ document.addEventListener("click", (e)=>{
 		}
 		else
 		{
-			console.log("let's go Login!!!");
-			console.log("session cookie not found!!!");
-			document.getElementById("loginOption").innerHTML = `
-					<li><a class="42login" id="42Login" href="#callback"> 42Login </a></li>
-					<li><a> Normal Login </a></li>
-			`;
+			Login42Api();
 		}
-	}
-	if (e.target.matches("a[href='#callback']"))
-	{
-		Login42Api();
 	}
 	// if (e.target.matches("a[href='#logout']"))
 	// {
