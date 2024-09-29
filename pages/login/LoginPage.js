@@ -1,5 +1,4 @@
 // LoginPage.js
-import { Login42Api, getCookie, setCookie, getApiToken, checkApiToken} from "./LoginAPI.js";
 
 export async	function renderLoginPage() {
     let html		= await fetch('pages/login/LoginPage.html');
@@ -9,52 +8,51 @@ export async	function renderLoginPage() {
 	DynamicContent.innerHTML = htmlText;
 }
 
-
-document.addEventListener("click", (e)=>{
-	if (e.target.matches("a[href='#42Login']")) {
-		let SessionCookie = getCookie('session');
-		console.log("SessionCookie = " + SessionCookie);
-		let codeParam = new URLSearchParams(window.location.search).get('code');
-		console.log("codeParam = " + codeParam);
-		if (SessionCookie != null)
-		{
-			checkApiToken(SessionCookie).then(res => {
-				if (res == null)
-				{
-					console.log("session cookie not error!!!");
-					setCookie("session", "", 0);
-				}
-				else
-				{
-					console.log("session cookie found!!!");
-					window.location.href = "http://localhost:8000/#gameMenu";
-				}
-			});
-		}
-		else if (codeParam != null)
-		{
-			console.log("codeParam found!!!");
-			getApiToken(codeParam)
-				.then(res => {
-					setCookie('session', res.access_token, 1);
-					console.log(res);
-					window.location.href = "http://localhost:8000/#gameMenu";
-			});
-
-		}
-		else
-		{
-			Login42Api();
-		}
+document.addEventListener('click', function(event) {
+    event.preventDefault();
+    const loginType = event.target.getAttribute('href').replace('#', '');
+	if(loginType === "42Login") {
+		loginAs42StudentHandering();
 	}
-	// if (e.target.matches("a[href='#logout']"))
-	// {
-	// 	checkApiToken(getCookie('session')).then(res => {
-	// 		if (res != null)
-	// 		{
-	// 			setCookie("session", "", 0);
-	// 		}
-	// 		window.location.href = "http://localhost:8000/#Login";
-	// 	});
-	// }
-})
+	else if (loginType === "guessLogin") {
+		// loginAsGuessHandering();;
+	}
+});
+
+async function loginAs42StudentHandering() {
+	if (getCookie("42Cookie") === null) {
+		oauth42Api();
+	}
+}
+
+async function oauth42Api() {
+    const clientId = 'u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227';
+    const redirectUri = 'http://localhost:8000/';
+    const responseType = 'code';
+
+    const params = new URLSearchParams({
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        response_type: responseType
+    });
+    const Oauth42Uri = `http://api.intra.42.fr/oauth/authorize?${params.toString()}`;
+    console.log("Oauth42Uri = " + Oauth42Uri);
+    let requestHeader = {
+        method: 'GET',
+        redirect: 'manual',
+    };
+    let response = await fetch(Oauth42Uri, requestHeader);
+    sessionStorage.setItem('oauthRedirectInProgress', true);
+    window.location.href = response.url;
+}
+
+function	getCookie(CookieName)
+{
+	let keyName = CookieName + "=";
+	let cookieArray = document.cookie.split(';');
+	let targetCookie = cookieArray.find((cookie) => cookie.indexOf(keyName) === 0);
+	if (targetCookie != null)
+		return (decodeURIComponent(targetCookie.substring(keyName.length)));
+	else
+		return null;
+}
