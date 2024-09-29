@@ -49,11 +49,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                     history.replaceState({ page: page }, page, url + `#${page}`);
                 });
             const jsonResponse = await sendOauthCodeToBackEnd(oauthCode);
-            jwt = jsonResponse.access_token;
-            deleteCookie("42OauthCode");
+            const jwt = jsonResponse.jwt;
             await setCookie("jwt_token", 365, jwt);
-            // const profileData = await fetch("localhost:9000/auth/user", requestHeader);
-            // localStorage.setItem('profileData', JSON.stringify(profileData));
+            const profileData = await fetch("http://localhost:9000/auth/users", requestHeader);
+            localStorage.setItem('profileData', JSON.stringify(profileData));
             });
         } else {
             console.log("there is some error with oauthCode");
@@ -63,12 +62,8 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 async function sendOauthCodeToBackEnd(oauthCode) {
     const oauthToBackEndPath = `http://localhost:9000/auth/callback?code=${oauthCode}`;
-    const requestHeader = {
-        method: 'GET',
-        redirect: 'manual',
-    };
     try {
-        const response = await fetch(oauthToBackEndPath, requestHeader);
+        const response = await fetch(oauthToBackEndPath);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
