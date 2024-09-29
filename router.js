@@ -33,10 +33,6 @@ window.onpopstate = function(event)
 document.addEventListener('DOMContentLoaded', async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const oauthCode = urlParams.get('code');
-    const requestHeader = {
-        method: 'GET',
-        redirect: 'manual',
-    };
 
     if (sessionStorage.getItem('oauthRedirectInProgress')) {
         if (oauthCode) {
@@ -51,8 +47,18 @@ document.addEventListener('DOMContentLoaded', async function() {
             const jsonResponse = await sendOauthCodeToBackEnd(oauthCode);
             const jwt = jsonResponse.jwt;
             await setCookie("jwt_token", 365, jwt);
-            const profileData = await fetch("http://localhost:9000/auth/users", requestHeader);
-            localStorage.setItem('profileData', JSON.stringify(profileData));
+            const token = await getCookie("jwt_token");
+            console.log("token = " + token);
+            let requestHeader ={
+                method : 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+            const profileData = await fetch("http://localhost:9000/auth/user", requestHeader);
+            const profileDataJson = await profileData.json();
+            console.log("profileData = " + JSON.stringify(profileDataJson));
+            localStorage.setItem('profileData', JSON.stringify(profileDataJson));
             });
         } else {
             console.log("there is some error with oauthCode");
@@ -112,13 +118,14 @@ function deleteCookie(name) {
 //     return value;
 // }
 
-// function	getCookie(CookieName)
-// {
-// 	let keyName = CookieName + "=";
-// 	let cookieArray = document.cookie.split(';');
-// 	let targetCookie = cookieArray.find((cookie) => cookie.indexOf(keyName) === 0);
-// 	if (targetCookie != null)
-// 		return (decodeURIComponent(targetCookie.substring(keyName.length)));
-// 	else
-// 		return null;
-// }
+async function	getCookie(CookieName)
+{
+	let keyName = CookieName + "=";
+	let cookieArray = document.cookie.split('; ');
+    console.log(cookieArray);
+	let targetCookie = cookieArray.find((cookie) => cookie.indexOf(keyName) === 0);
+	if (targetCookie != null)
+		return (decodeURIComponent(targetCookie.substring(keyName.length)));
+	else
+		return null;
+}

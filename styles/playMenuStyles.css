@@ -1,0 +1,15 @@
+.gameBlock{
+    display: flex;
+}
+
+.profileBlock{
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 80%;
+}
+
+#profileImage{
+    scale: 0.2;
+}

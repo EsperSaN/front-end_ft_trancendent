@@ -37,9 +37,10 @@
 	font-size: 15px;
 }
 
-#confirmPassword, #password, #username {
+#inputBox input {
 	height: 30px;
 	margin-top: 1%;
+	margin-bottom: 1%;
 	border-radius: 10px;
 }
 

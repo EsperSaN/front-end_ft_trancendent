@@ -24,14 +24,14 @@ body {
     position: absolute; /* วางไว้เหนือวิดีโอ background */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* จัดให้อยู่ตรงกลางของหน้าจอ */
+    transform: translate(-50%, -50%);
     display: flex;
-    flex-direction: column; /* เรียงเนื้อหาเป็นแนวตั้ง */
-    align-items: center; /* จัดเนื้อหาให้กึ่งกลางแนวนอน */
-    justify-content: flex-start; /* จัดเนื้อหาให้ชิดขอบบน */
-    color: rgb(0, 0, 0); /* เปลี่ยนสีตัวหนังสือให้เห็นชัดเจนบนวิดีโอ background */
-    font-family: 'Itim', sans-serif; /* ใช้ font ที่คุณระบุ */
-    text-align: center; /* จัดให้ตัวอักษรกึ่งกลาง */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: rgb(0, 0, 0);
+    font-family: 'Itim', sans-serif;
+    text-align: center;
     height: 80%;
     width: 50%;
 }
