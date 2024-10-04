@@ -14,6 +14,7 @@
 	flex-direction: column;
 	align-items: center;
 }
+
 #inputBox {
 	width: 80%;
 	height: 60%;
@@ -30,6 +31,7 @@
 	margin-top: 5px;
 	width: 60%;
 }
+
 #registerError {
 	margin-top: -2%;
 	margin-bottom: -2%;

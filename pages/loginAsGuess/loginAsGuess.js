@@ -1,5 +1,5 @@
 
-export async function renderRegisterPage() {
+export async function renderLoginAsGuess() {
 	let html		= await fetch('pages/register/register.html');
 	let htmlText	= await html.text();
 
