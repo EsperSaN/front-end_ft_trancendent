@@ -4,6 +4,7 @@ import { renderNullPage } from './pages/NullPage.js';
 import { renderLoginPage } from './pages/login/LoginPage.js';
 import { renderRegisterPage } from './pages/register/register.js';
 import { renderGameMenu } from './pages/GameMenu/GameMenu.js';
+import { renderLoginAsGuess } from './pages/loginAsGuess/loginAsGuess.js';
 
 const pageRoutes = 
 {
@@ -29,11 +30,12 @@ window.onpopstate = function(event)
     }
 };
 
-// oauth page load handling
+// oauth and initial page load handling
+
 document.addEventListener('DOMContentLoaded', async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const oauthCode = urlParams.get('code');
-
+    
     if (sessionStorage.getItem('oauthRedirectInProgress')) {
         if (oauthCode) {
             console.log('OAuth code detected:', oauthCode);
@@ -55,13 +57,36 @@ document.addEventListener('DOMContentLoaded', async function() {
                     'Authorization': `Bearer ${token}`
                 }
             };
-            const profileData = await fetch("http://localhost:9000/auth/user", requestHeader);
-            const profileDataJson = await profileData.json();
-            console.log("profileData = " + JSON.stringify(profileDataJson));
-            localStorage.setItem('profileData', JSON.stringify(profileDataJson));
+            try {
+                const profileData = await fetch("http://localhost:9000/auth/user", requestHeader);
+                if (profileData.ok) {
+                  const profileDataJson = await profileData.json();
+                  if (profileDataJson) {
+                    localStorage.setItem('profileData', JSON.stringify(profileDataJson));
+                  } 
+                  else {
+                    console.log("Don't get any data from server");
+                  }
+                }
+                else {
+                  console.log('Error: Response status', profileData.status);
+                }
+              } catch (error) {
+                console.log('Error:', error);
+              }
+            navigateTo("gameMenu");
             });
         } else {
             console.log("there is some error with oauthCode");
+        }
+    }
+    else if (sessionStorage.getItem('isInitialLoadPage') === null) {
+        console.log("InitialLoadPage");
+        sessionStorage.setItem('isInitialLoadPage', true);
+        if (localStorage.getItem('profileData')) {
+            navigateTo("gameMenu");
+        } else {
+            navigateTo("Login");
         }
     }
 });

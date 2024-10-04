@@ -60,3 +60,9 @@ body {
 .menu ul li a:hover {
     color: #FFD700; /* เปลี่ยนสีเมื่อ hover */
 }
+
+#MeowPongTitle{
+    padding: 0; /* ลดระยะห่างภายในของ element */
+    margin: 0; /* ลดระยะห่างภายนอกของ element */
+    width: max(100%, 300px);
+}
