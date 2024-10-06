@@ -22,14 +22,16 @@ export async function navigateTo(page, isHistoryPush = true)
     await renderFunction();
     if (isHistoryPush) {
         history.pushState({ page: page }, page, `#${page}`);
+        console.log("pushState: " + page);
     }
 }
 
 // Handle back and forward button navigation
 window.onpopstate = function(event) 
 {
+    event.preventDefault();
     if (event.state) {
-        navigateTo(event.state.page, false); // false to prevent pushing state again
+        history.back();
     }
 };
 
@@ -38,8 +40,17 @@ window.onpopstate = function(event)
 document.addEventListener('DOMContentLoaded', async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const oauthCode = urlParams.get('code');
-    
+
+    if (sessionStorage.getItem('isInitialLoadPage') === null) {
+        sessionStorage.setItem('isInitialLoadPage', true);
+    }
+    if (sessionStorage.getItem('isInitialLoadPage')) {
+        console.log("initialDownLoad");
+        console.log(sessionStorage.getItem('isInitialLoadPage'));
+        navigateTo("Login");
+    }
     if (sessionStorage.getItem('oauthRedirectInProgress')) {
+        // sessionStorage.setItem('isInitialLoadPage', false);
         if (oauthCode) {
             console.log('OAuth code detected:', oauthCode);
             sessionStorage.removeItem('oauthRedirectInProgress');
@@ -126,25 +137,7 @@ async function	setCookie(name, day, value, path = "/")
 	let date = new Date(Date.now() + day * 24 * 60 * 60 * 1000).toUTCString(); // or 864e5
 	value = encodeURIComponent(value);
 	document.cookie = `${name}=${value}; expires=${date}; path=${path};`;
-	// console.log("document.cookie = " + document.cookie);
 }
-
-function deleteCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-}
-
-// async function getProfileData(key)
-// {
-//     if(getCookie('profileData') === null){
-//         console.log("profileDate not found")
-//         return null;
-//     } else {
-//         const profileDataString = localStorage.getItem('profileData');
-//         const profileData = JSON.parse(profileDataString);
-//         const value = profileData.key;
-//     }
-//     return value;
-// }
 
 async function	getCookie(CookieName)
 {
