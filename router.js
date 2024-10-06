@@ -5,13 +5,15 @@ import { renderLoginPage } from './pages/login/LoginPage.js';
 import { renderRegisterPage } from './pages/register/register.js';
 import { renderGameMenu } from './pages/gameMenu/gameMenu.js';
 import { renderLoginAsGuess } from './pages/loginAsGuess/loginAsGuess.js';
+import { renderProfileConfig } from './pages/profileConfig/profileConfig.js';
 
 const pageRoutes = 
 {
     'Login'                 :   renderLoginPage,
     'register'              :   renderRegisterPage,
     'gameMenu'              :   renderGameMenu,
-    'guessLogin'    :   renderLoginAsGuess
+    'guessLogin'            :   renderLoginAsGuess,
+    'editProfile'           :   renderProfileConfig
 }
 
 export async function navigateTo(page, isHistoryPush = true) 

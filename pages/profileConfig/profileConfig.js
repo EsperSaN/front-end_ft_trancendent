@@ -1,16 +1,19 @@
 // profileConfig.js
 export async function renderProfileConfig() {
-	const html		= await fetch('./profileConfig.html');
+	const html		= await fetch('pages/profileConfig/profileConfig.html');
 	const htmlText	= await html.text();
 	const dynamicContent = document.querySelector('#DynamicContent');
 	const mainStylesheet = document.querySelector('link[href="./styles/main.css"]');
 
-	flexContainer = document.createElement("div");
+	document.querySelector(".flex-container").remove();
+	const flexContainer = document.createElement("div");
 	flexContainer.classList.add("flex-container");
 	flexContainer.innerHTML = htmlText;
-	profileConfigStylesheet = document.createElement("link");
+	document.getElementById("dynamicStyle").remove();
+	const profileConfigStylesheet = document.createElement("link");
 	profileConfigStylesheet.rel = "stylesheet";
-	profileConfigStylesheet.hrel = "./profileConfig.css";
+	profileConfigStylesheet.href = "./pages/profileConfig/profileConfig.css";
+	profileConfigStylesheet.id = "dynamicStyle";
 	mainStylesheet.insertAdjacentElement("afterend", profileConfigStylesheet);
-	await dynamicContent.appendChild(flexContainer);
+	dynamicContent.appendChild(flexContainer);
 }
