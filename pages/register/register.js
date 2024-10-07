@@ -1,10 +1,13 @@
 
 export async function renderRegisterPage() {
-	let html		= await fetch('pages/register/register.html');
-	let htmlText	= await html.text();
+	const html		= await fetch('pages/register/register.html');
+	const htmlText	= await html.text();
+	const dynamicContent = document.querySelector('#loginOption');
+	const dynamicStyle = document.querySelector('#dynamicStyle');
+	const backButton = document.createElement("div");
 
-	const element = document.querySelector('#loginOption');
-	element.innerHTML = htmlText;
+	dynamicStyle.href = "pages/register/register.css";
+	dynamicContent.innerHTML = htmlText;
 }
 
 // document.addEventListener("click", async (e)=>{

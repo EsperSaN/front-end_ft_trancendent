@@ -19,7 +19,7 @@
     display:  flex;
     justify-content: start;
     align-items: center;
-    width: 85%;
+    width: 75%;
     height: 85%;
     background-color: rgba(162, 162, 162, 0.8);
     border-radius: 30px;
@@ -111,4 +111,8 @@ input {
 
 .profileconfig-Block > button {
     width: 300px;
+}
+
+#backButton {
+    display: flex;
 }

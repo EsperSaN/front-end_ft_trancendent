@@ -54,3 +54,7 @@
 label {
 	text-align: left;
 }
+
+#backButton {
+    display: flex;
+}

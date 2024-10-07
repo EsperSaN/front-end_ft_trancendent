@@ -4,9 +4,8 @@ export async function renderGameMenu() {
 	const html		= await fetch('pages/gameMenu/gameMenu.html');
 	const htmlText	= await html.text();
 	const dynamicContent = document.querySelector('#DynamicContent');
-	const mainStylesheet = document.querySelector('link[href="./styles/main.css"]');
+	const DynamicStyle = document.querySelector('#dynamicStyle');
 	const flexContainer = document.createElement("div");
-	const gameMenuStylesheet = document.createElement("link");
 
 	flexContainer.classList.add("flex-container");
 	flexContainer.innerHTML = htmlText;
@@ -16,11 +15,11 @@ export async function renderGameMenu() {
 	const profileData = await JSON.parse(profileDataString);
     profileImage.src = profileData.profile;
 	profileName.innerHTML = profileData.username;
-	gameMenuStylesheet.href = "./pages/gameMenu/gameMenu.css";
-	gameMenuStylesheet.rel = "stylesheet";
-	gameMenuStylesheet.id =	"dynamicStyle"; 
-	mainStylesheet.insertAdjacentElement("afterend", gameMenuStylesheet);
-	document.getElementById("loginOption").remove();
-	document.getElementById("MeowPongTitle").remove();
+	DynamicStyle.href = "pages/gameMenu/gameMenu.css";
+	dynamicContent.innerHTML = '';
 	dynamicContent.appendChild(flexContainer);
 }
+
+// addEventListener('click', async function(
+
+// ));

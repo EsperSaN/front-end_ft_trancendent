@@ -66,3 +66,33 @@ body {
     margin: 0; /* ลดระยะห่างภายนอกของ element */
     width: max(100%, 300px);
 }
+
+#backButton {
+    position: fixed;
+    display: none;
+    justify-content: space-between;
+    height: 100px;
+    top: 90%;
+    left: 2%;
+}
+
+#backButton img {
+    width: 0px;
+    height: auto;
+    transition: width 0.3s;
+}
+
+#backButton a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+    transition: color 0.3s;
+}
+
+#backButton a:hover {
+    color: #FFD700;
+}
+
+#backButton a:hover img {
+    width: 50px;
+}

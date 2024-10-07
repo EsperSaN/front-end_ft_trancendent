@@ -20,18 +20,21 @@ export async function navigateTo(page, isHistoryPush = true)
 {
     const renderFunction = pageRoutes[page] || renderNullPage;
     await renderFunction();
+    const content = document.getElementById("DynamicContent").innerHTML;
+    const style = document.getElementById("dynamicStyle").href;
     if (isHistoryPush) {
-        history.pushState({ page: page }, page, `#${page}`);
-        console.log("pushState: " + page);
+        history.pushState({content: content, style: style}, page, `#${page}`);
     }
 }
+
 
 // Handle back and forward button navigation
 window.onpopstate = function(event) 
 {
     event.preventDefault();
     if (event.state) {
-        history.back();
+        window.document.getElementById("DynamicContent").innerHTML = event.state.content;
+        window.document.getElementById("dynamicStyle").href = event.state.style;
     }
 };
 
@@ -128,7 +131,10 @@ document.addEventListener('click', function(event) {
         navigateTo(page);
     }
     else {
-        history.back();
+        history.go(-1)
+        let state = history.state;
+        window.document.getElementById("DynamicContent").innerHTML = state.content;
+        window.document.getElementById("dynamicStyle").href = state.style;
     }
 });
 
