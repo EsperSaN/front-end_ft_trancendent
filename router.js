@@ -4,7 +4,7 @@ import { renderNullPage } from './pages/NullPage.js';
 import { renderLoginPage } from './pages/login/LoginPage.js';
 import { renderRegisterPage } from './pages/register/register.js';
 import { renderGameMenu } from './pages/gameMenu/gameMenu.js';
-import { renderLoginAsGuess } from './pages/loginAsGuess/loginAsGuess.js';
+import { renderLoginAsGuest } from './pages/loginAsGuest/loginAsGuest.js';
 import { renderProfileConfig } from './pages/profileConfig/profileConfig.js';
 
 const pageRoutes = 
@@ -12,7 +12,7 @@ const pageRoutes =
     'Login'                 :   renderLoginPage,
     'register'              :   renderRegisterPage,
     'gameMenu'              :   renderGameMenu,
-    'guessLogin'            :   renderLoginAsGuess,
+    'guestLogin'            :   renderLoginAsGuest,
     'editProfile'           :   renderProfileConfig
 }
 
@@ -127,11 +127,11 @@ async function sendOauthCodeToBackEnd(oauthCode) {
 document.addEventListener('click', function(event) {
     event.preventDefault();
     const page = event.target.getAttribute('href').replace('#', '');
-    if (page !== 'Back'){
+     if (page !== 'Back'){
         navigateTo(page);
     }
     else {
-        history.go(-1)
+        history.go(-1);
         let state = history.state;
         window.document.getElementById("DynamicContent").innerHTML = state.content;
         window.document.getElementById("dynamicStyle").href = state.style;

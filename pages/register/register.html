@@ -1,33 +1,23 @@
-	<div id="registerBox">
-		
-		<form id="registerForm">
-			<h1 id = "registorHeader">Registration</h1>
-			<div id="inputBox">
-				<label for="username">Username</label>
-				<input type="text" name="username" id="username" required>
-			</div>
-			<div id="inputBox">
-				<label for="email">Email</label>
-				<input type="email" name="email" id="email" required>
-			</div>
-			<div id="inputBox">
-				<label for="password">Password</label>
-				<input type="password" name="password" id="password" required>
-			
-			</div>
-			<div id="inputBox">
-				<label for="confirmPassword">Confirm Password</label>
-				<input type="password" name="confirmPassword" id="confirmPassword" required>
-			</div>
-			<div id="registerError">
-				<p id = errorMsg>
-					 <!-- error MSG  -->
-				</p>
-			</div>
-			<input type="submit" value="create account" id="registerButton">
-	
-			<div id="registerLogin">
-				<p>Already have an account? <a href="#login">Login</a></p>
-			</div>	
-		</form>
+	<h1>REGISTER</h1>
+
+	<div class="form-floating mb-3">
+		<input type="username" class="form-control" id="floatingInput" placeholder="Username">
+		<label for="floatingInput">Username</label>
 	</div>
+
+	<div class="form-floating mb-3">
+		<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+		<label for="floatingInput">Email</label>
+	</div>
+
+	<div class="form-floating mb-3">
+		<input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+		<label for="floatingPassword">Password</label>
+	</div>
+
+	<div class="form-floating mb-3">
+		<input type="password" class="form-control" id="confirm-password" placeholder="Password">
+		<label for="confirm-password">Confirm Password</label>
+	</div>
+
+	<button type="login" class="btn btn-primary">create account</button>
