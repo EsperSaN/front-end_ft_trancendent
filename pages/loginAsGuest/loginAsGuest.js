@@ -3,8 +3,11 @@ export async function renderLoginAsGuest() {
 	const htmlText	= await html.text();
 	const menuElement = document.querySelector('.menu');
 	const frameMenuElement = document.createElement("div");
-	document.querySelector('#loginOption').remove();
+	const loginOption = document.querySelector('#loginOption');
 
+	if (loginOption) {
+		loginOption.remove();
+	}
 	dynamicStyle.href = "pages/loginAsGuest/loginAsGuest.css";
 	frameMenuElement.classList.add("container-sm");
 	frameMenuElement.classList.add("frame");

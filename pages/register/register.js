@@ -10,4 +10,19 @@ export async function renderRegisterPage() {
 	frameMenuElement.classList.add("frame");
 	frameMenuElement.innerHTML = htmlText;
 	menuElement.appendChild(frameMenuElement);
+
+	const createAccountButton = document.querySelector('.btn.btn-primary');
+	createAccountButton.addEventListener('click', createAccount);
+}
+
+async function createAccount() {
+	const username = document.getElementById("usernameInput").value;
+	const email = document.getElementById("emailInput").value;
+	const password = document.getElementById("passwordInput").value;
+	const confirmpassword = document.getElementById("confirmPasswordInput").value;
+
+	console.log("username: " + username);
+	console.log("email: " + email);
+	console.log("password: " + password);
+	console.log("confirmpassword: " + confirmpassword);
 }
