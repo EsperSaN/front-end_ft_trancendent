@@ -4,12 +4,13 @@ const  SETTING = {
         BASE_WIDTH : 800,
         BASE_HEIGHT : 400,
         PLAYER_PLACE_OFFSET : 50,
-        PONGBALL_IMG : "./ball.png",
+        PONGBALL_IMG : "./pages/play/ball.png",
+        BG_IMAGE : "./pages/play/BG.png",
         PONGBALL_COLOR : "red",
         PONGBALL_RAD : 10, 
         PLAYER_RAD : 30,
-        PLAYER_IMG : "./player.png",
-        OPPONENT_IMG : "./opponent.png",
+        PLAYER_IMG : "./pages/play/player.png",
+        OPPONENT_IMG : "./pages/play/opponent.png",
         STROKE_SIZE : 0
     }
 
@@ -244,7 +245,8 @@ class PongGame
         this.detectKeyAndAdjustPosition();
         this.incressGame_speed();
         // this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
-        drawBackground();
+        // drawBackground();
+        this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height)
         this.detectBallAndUpdateScore();
         this.player.update();
         this.opponent.update();
@@ -289,7 +291,7 @@ document.addEventListener("keyup", (e) => {
 function drawBackground() {
     let ctx = canvasss.getContext('2d');
     let bgImage = new Image();
-    bgImage.src = "BG.png"; // Your background image path
+    bgImage.src = SETTING.BG_IMAGE; // Your background image path
         let scale = Math.max(
             canvasss.width / bgImage.width,
             canvasss.height / bgImage.height
