@@ -12,9 +12,14 @@ export async function renderGameMenu() {
     const profileImage = flexContainer.querySelector('#profileImage');
 	const profileName = flexContainer.querySelector('#profileName');
 	const profileDataString = localStorage.getItem('profileData');
-	const profileData = await JSON.parse(profileDataString);
-    profileImage.src = profileData.profile;
-	profileName.innerHTML = profileData.username;
+	if (profileDataString) {
+		const profileData = await JSON.parse(profileDataString);
+		profileImage.src = profileData.profile;
+		profileName.innerHTML = profileData.username;
+	} else {
+		profileImage.src = "GraphicElement/1.png";
+		profileName.innerHTML = "Nameless";
+	}
 	DynamicStyle.href = "pages/gameMenu/gameMenu.css";
 	dynamicContent.innerHTML = '';
 	dynamicContent.appendChild(flexContainer);

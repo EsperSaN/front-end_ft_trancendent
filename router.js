@@ -6,6 +6,7 @@ import { renderRegisterPage } from './pages/register/register.js';
 import { renderGameMenu } from './pages/gameMenu/gameMenu.js';
 import { renderLoginAsGuest } from './pages/loginAsGuest/loginAsGuest.js';
 import { renderProfileConfig } from './pages/profileConfig/profileConfig.js';
+import { renderPlay } from './pages/play/play.js';
 
 const pageRoutes = 
 {
@@ -13,7 +14,8 @@ const pageRoutes =
     'register'              :   renderRegisterPage,
     'gameMenu'              :   renderGameMenu,
     'guestLogin'            :   renderLoginAsGuest,
-    'editProfile'           :   renderProfileConfig
+    'editProfile'           :   renderProfileConfig,
+    'play'                  :   renderPlay
 }
 
 export async function navigateTo(page, isHistoryPush = true) 
@@ -126,13 +128,22 @@ async function sendOauthCodeToBackEnd(oauthCode) {
 // Onclick Handling
 document.addEventListener('click', function(event) {
     event.preventDefault();
-    const page = event.target.getAttribute('href').replace('#', '');
-     if (page !== 'Back'){
-        navigateTo(page);
+
+    // Get the href attribute of the clicked element
+    const href = event.target.getAttribute('href');
+
+    // Ignore clicks with null or empty href
+    if (!href) {
+        return;
     }
-    else {
+
+    // Process only if href is valid
+    const page = href.replace('#', '');
+    if (page !== 'Back') {
+        navigateTo(page);
+    } else {
         history.go(-1);
-        let state = history.state;
+        const state = history.state;
         window.document.getElementById("DynamicContent").innerHTML = state.content;
         window.document.getElementById("dynamicStyle").href = state.style;
     }

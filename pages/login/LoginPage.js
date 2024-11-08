@@ -10,10 +10,19 @@ export async	function renderLoginPage() {
 
 document.addEventListener('click', function(event) {
     event.preventDefault();
-    const loginType = event.target.getAttribute('href').replace('#', '');
-	if(loginType === "42Login") {
-		oauth42Api()
-	}
+
+    // Get the href attribute of the clicked element
+    const href = event.target.getAttribute('href');
+
+    // Ignore clicks where href is null or undefined
+    if (!href) {
+        return;
+    }
+
+    const loginType = href.replace('#', '');
+    if (loginType === "42Login") {
+        oauth42Api();
+    }
 });
 
 async function oauth42Api() {
