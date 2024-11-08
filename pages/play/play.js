@@ -6,7 +6,7 @@ export async function renderPlay() {
     dynamicContent.innerHTML = htmlText;
     // Manually create and append the script element
     let script = document.createElement('script');
-    script.src = './pong.js';
+    script.src = './pages/play/pong.js';
     script.defer = true;
     dynamicContent.appendChild(script);
 }
