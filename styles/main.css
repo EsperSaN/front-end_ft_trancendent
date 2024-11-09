@@ -24,14 +24,14 @@ body {
     position: absolute; /* วางไว้เหนือวิดีโอ background */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* จัดให้อยู่ตรงกลางของหน้าจอ */
+    transform: translate(-50%, -50%);
     display: flex;
-    flex-direction: column; /* เรียงเนื้อหาเป็นแนวตั้ง */
-    align-items: center; /* จัดเนื้อหาให้กึ่งกลางแนวนอน */
-    justify-content: flex-start; /* จัดเนื้อหาให้ชิดขอบบน */
-    color: rgb(0, 0, 0); /* เปลี่ยนสีตัวหนังสือให้เห็นชัดเจนบนวิดีโอ background */
-    font-family: 'Itim', sans-serif; /* ใช้ font ที่คุณระบุ */
-    text-align: center; /* จัดให้ตัวอักษรกึ่งกลาง */
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    color: rgb(0, 0, 0);
+    font-family: 'Itim', sans-serif;
+    text-align: center;
     height: 80%;
     width: 50%;
 }
@@ -59,4 +59,40 @@ body {
 
 .menu ul li a:hover {
     color: #FFD700; /* เปลี่ยนสีเมื่อ hover */
+}
+
+#MeowPongTitle{
+    padding: 0; /* ลดระยะห่างภายในของ element */
+    margin: 0; /* ลดระยะห่างภายนอกของ element */
+    width: max(100%, 300px);
+}
+
+#backButton {
+    position: fixed;
+    display: none;
+    justify-content: space-between;
+    height: 100px;
+    top: 90%;
+    left: 2%;
+}
+
+#backButton img {
+    width: 0px;
+    height: auto;
+    transition: width 0.3s;
+}
+
+#backButton a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 30px;
+    transition: color 0.3s;
+}
+
+#backButton a:hover {
+    color: #FFD700;
+}
+
+#backButton a:hover img {
+    width: 50px;
 }

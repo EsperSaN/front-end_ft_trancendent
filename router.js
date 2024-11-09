@@ -3,42 +3,59 @@
 import { renderNullPage } from './pages/NullPage.js';
 import { renderLoginPage } from './pages/login/LoginPage.js';
 import { renderRegisterPage } from './pages/register/register.js';
-import { renderGameMenu } from './pages/GameMenu/GameMenu.js';
+import { renderGameMenu } from './pages/gameMenu/gameMenu.js';
+import { renderLoginAsGuest } from './pages/loginAsGuest/loginAsGuest.js';
+import { renderProfileConfig } from './pages/profileConfig/profileConfig.js';
+import { renderPlay } from './pages/play/play.js';
 
 const pageRoutes = 
 {
-    'Login'         :   renderLoginPage,
-    'register'      :   renderRegisterPage,
-    'gameMenu'      :   renderGameMenu
+    'Login'                 :   renderLoginPage,
+    'register'              :   renderRegisterPage,
+    'gameMenu'              :   renderGameMenu,
+    'guestLogin'            :   renderLoginAsGuest,
+    'editProfile'           :   renderProfileConfig,
+    'play'                  :   renderPlay
 }
 
 export async function navigateTo(page, isHistoryPush = true) 
 {
     const renderFunction = pageRoutes[page] || renderNullPage;
     await renderFunction();
+    const content = document.getElementById("DynamicContent").innerHTML;
+    const style = document.getElementById("dynamicStyle").href;
     if (isHistoryPush) {
-        history.pushState({ page: page }, page, `#${page}`);
+        history.pushState({content: content, style: style}, page, `#${page}`);
     }
 }
+
 
 // Handle back and forward button navigation
 window.onpopstate = function(event) 
 {
+    event.preventDefault();
     if (event.state) {
-        navigateTo(event.state.page, false); // false to prevent pushing state again
+        window.document.getElementById("DynamicContent").innerHTML = event.state.content;
+        window.document.getElementById("dynamicStyle").href = event.state.style;
     }
 };
 
-// oauth page load handling
+// oauth and initial page load handling
+
 document.addEventListener('DOMContentLoaded', async function() {
     const urlParams = new URLSearchParams(window.location.search);
     const oauthCode = urlParams.get('code');
-    const requestHeader = {
-        method: 'GET',
-        redirect: 'manual',
-    };
 
+    if (sessionStorage.getItem('isInitialLoadPage') === null) {
+        sessionStorage.setItem('isInitialLoadPage', true);
+    }
+    if (sessionStorage.getItem('isInitialLoadPage')) {
+        console.log("initialDownLoad");
+        console.log(sessionStorage.getItem('isInitialLoadPage'));
+        navigateTo("Login");
+    }
     if (sessionStorage.getItem('oauthRedirectInProgress')) {
+        // sessionStorage.setItem('isInitialLoadPage', false);
         if (oauthCode) {
             console.log('OAuth code detected:', oauthCode);
             sessionStorage.removeItem('oauthRedirectInProgress');
@@ -49,26 +66,54 @@ document.addEventListener('DOMContentLoaded', async function() {
                     history.replaceState({ page: page }, page, url + `#${page}`);
                 });
             const jsonResponse = await sendOauthCodeToBackEnd(oauthCode);
-            jwt = jsonResponse.access_token;
-            deleteCookie("42OauthCode");
+            const jwt = jsonResponse.jwt;
             await setCookie("jwt_token", 365, jwt);
-            // const profileData = await fetch("localhost:9000/auth/user", requestHeader);
-            // localStorage.setItem('profileData', JSON.stringify(profileData));
+            const token = await getCookie("jwt_token");
+            console.log("token = " + token);
+            let requestHeader ={
+                method : 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            };
+            try {
+                const profileData = await fetch("http://localhost:9000/auth/user", requestHeader);
+                if (profileData.ok) {
+                  const profileDataJson = await profileData.json();
+                  if (profileDataJson) {
+                    localStorage.setItem('profileData', JSON.stringify(profileDataJson));
+                  } 
+                  else {
+                    console.log("Don't get any data from server");
+                  }
+                }
+                else {
+                  console.log('Error: Response status', profileData.status);
+                }
+              } catch (error) {
+                console.log('Error:', error);
+              }
+            navigateTo("gameMenu");
             });
         } else {
             console.log("there is some error with oauthCode");
+        }
+    }
+    else if (sessionStorage.getItem('isInitialLoadPage') === null) {
+        console.log("InitialLoadPage");
+        sessionStorage.setItem('isInitialLoadPage', true);
+        if (localStorage.getItem('profileData')) {
+            navigateTo("gameMenu");
+        } else {
+            navigateTo("Login");
         }
     }
 });
 
 async function sendOauthCodeToBackEnd(oauthCode) {
     const oauthToBackEndPath = `http://localhost:9000/auth/callback?code=${oauthCode}`;
-    const requestHeader = {
-        method: 'GET',
-        redirect: 'manual',
-    };
     try {
-        const response = await fetch(oauthToBackEndPath, requestHeader);
+        const response = await fetch(oauthToBackEndPath);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -83,12 +128,24 @@ async function sendOauthCodeToBackEnd(oauthCode) {
 // Onclick Handling
 document.addEventListener('click', function(event) {
     event.preventDefault();
-    const page = event.target.getAttribute('href').replace('#', '');
-    if (page !== 'Back'){
-        navigateTo(page);
+
+    // Get the href attribute of the clicked element
+    const href = event.target.getAttribute('href');
+
+    // Ignore clicks with null or empty href
+    if (!href) {
+        return;
     }
-    else {
-        history.back();
+
+    // Process only if href is valid
+    const page = href.replace('#', '');
+    if (page !== 'Back') {
+        navigateTo(page);
+    } else {
+        history.go(-1);
+        const state = history.state;
+        window.document.getElementById("DynamicContent").innerHTML = state.content;
+        window.document.getElementById("dynamicStyle").href = state.style;
     }
 });
 
@@ -97,33 +154,16 @@ async function	setCookie(name, day, value, path = "/")
 	let date = new Date(Date.now() + day * 24 * 60 * 60 * 1000).toUTCString(); // or 864e5
 	value = encodeURIComponent(value);
 	document.cookie = `${name}=${value}; expires=${date}; path=${path};`;
-	// console.log("document.cookie = " + document.cookie);
 }
 
-function deleteCookie(name) {
-    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+async function	getCookie(CookieName)
+{
+	let keyName = CookieName + "=";
+	let cookieArray = document.cookie.split('; ');
+    console.log(cookieArray);
+	let targetCookie = cookieArray.find((cookie) => cookie.indexOf(keyName) === 0);
+	if (targetCookie != null)
+		return (decodeURIComponent(targetCookie.substring(keyName.length)));
+	else
+		return null;
 }
-
-// async function getProfileData(key)
-// {
-//     if(getCookie('profileData') === null){
-//         console.log("profileDate not found")
-//         return null;
-//     } else {
-//         const profileDataString = localStorage.getItem('profileData');
-//         const profileData = JSON.parse(profileDataString);
-//         const value = profileData.key;
-//     }
-//     return value;
-// }
-
-// function	getCookie(CookieName)
-// {
-// 	let keyName = CookieName + "=";
-// 	let cookieArray = document.cookie.split(';');
-// 	let targetCookie = cookieArray.find((cookie) => cookie.indexOf(keyName) === 0);
-// 	if (targetCookie != null)
-// 		return (decodeURIComponent(targetCookie.substring(keyName.length)));
-// 	else
-// 		return null;
-// }

@@ -10,20 +10,20 @@ export async	function renderLoginPage() {
 
 document.addEventListener('click', function(event) {
     event.preventDefault();
-    const loginType = event.target.getAttribute('href').replace('#', '');
-	if(loginType === "42Login") {
-		loginAs42StudentHandering();
-	}
-	else if (loginType === "guessLogin") {
-		// loginAsGuessHandering();;
-	}
-});
 
-async function loginAs42StudentHandering() {
-	if (getCookie("42Cookie") === null) {
-		oauth42Api();
-	}
-}
+    // Get the href attribute of the clicked element
+    const href = event.target.getAttribute('href');
+
+    // Ignore clicks where href is null or undefined
+    if (!href) {
+        return;
+    }
+
+    const loginType = href.replace('#', '');
+    if (loginType === "42Login") {
+        oauth42Api();
+    }
+});
 
 async function oauth42Api() {
     const clientId = 'u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227';
@@ -44,15 +44,4 @@ async function oauth42Api() {
     let response = await fetch(Oauth42Uri, requestHeader);
     sessionStorage.setItem('oauthRedirectInProgress', true);
     window.location.href = response.url;
-}
-
-function	getCookie(CookieName)
-{
-	let keyName = CookieName + "=";
-	let cookieArray = document.cookie.split(';');
-	let targetCookie = cookieArray.find((cookie) => cookie.indexOf(keyName) === 0);
-	if (targetCookie != null)
-		return (decodeURIComponent(targetCookie.substring(keyName.length)));
-	else
-		return null;
 }
