@@ -244,6 +244,7 @@ class PongGame
 
         this.detectKeyAndAdjustPosition();
         this.incressGame_speed();
+        resizeCanvas();
         // this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
         // drawBackground();
         this.ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height)
