@@ -84,9 +84,8 @@ const componentStyle = `
                                     () => window.Router.navigate('/register/'));
   }
 
-  async login42(event)
+  async login42()
   {
-    // event.preventDefault();
     const clientId = 'u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227';
     const redirectUri = 'http://localhost:8000/';
     const responseType = 'code';
@@ -102,6 +101,7 @@ const componentStyle = `
     };
     let response = await fetch(Oauth42Uri, requestHeader);
     localStorage.setItem('oauthRedirectInProgress', true);
+    console.log("fetch 42 api success!");
     window.location.href = response.url;
   }
 }
