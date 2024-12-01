@@ -118,22 +118,20 @@ export class RegisterPage extends Component {
 
     super.addComponentEventListener(this.shadowRoot.querySelector(".btn-primary"),
                                     "click",
-                                    this.#create_account);
+                                    this.create_account);
   }
 
-  async #create_account()
+  async create_account()
   {
-	const username = document.getElementById("usernameInput").value;
-	const email = document.getElementById("emailInput").value;
-	const password = document.getElementById("passwordInput").value;
-	const confirmpassword = document.getElementById("confirmPasswordInput").value;
+    const username = this.shadowRoot.getElementById("usernameInput").value;
+    const email = this.shadowRoot.getElementById("emailInput").value;
+    const password = this.shadowRoot.getElementById("passwordInput").value;
 
 	// Create the request body
 	const requestBody = {
 		username: username,
 		email: email,
 		password: password,
-		confirmpassword: confirmpassword
 	};
 
 	// Set up the request headers and options for a POST request
@@ -146,24 +144,18 @@ export class RegisterPage extends Component {
 	};
 
 	// Fetch data from the server with a POST request
-	const response = await fetch("http://localhost:9000/auth/register", requestHeader);
+	const response = await fetch("http://localhost:9000/auth/register/", requestHeader);
 
 	// Handle the response
-	if (response.ok) {
-		const responseData = await response.json();
-		// Check for specific message in response data
-		if (responseData.message !== 'Successful') {
-			alert(responseData.message);
-		} else {
-			console.log("Account created successfully:", responseData);
-			const frameMenuElement = document.querySelector('.frame');
-			frameMenuElement.remove();
-			navigateTo("guestLogin")
-		}
-	} else {
-		console.error("Error:", response.statusText);
-	}
-  }
+    if (response.status >= 200 && response.status <= 299) {
+        console.log("Successful");
+        window.Router.navigate('/guest-login/')
+    } else {
+        const responseData = await response.json();
+        console.log("Failed with status:", response.status);
+        console.log("Response error data:", responseData);
+    }
+  } 
 }
 
 customElements.define(name, RegisterPage);

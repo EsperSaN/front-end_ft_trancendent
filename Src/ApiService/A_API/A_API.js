@@ -1,53 +1,64 @@
 export class A_API {
-    constructor() {
-      if (new.target === A_API) {
-        throw new TypeError("Cannot construct Abstract instances directly");
+  constructor() {
+    if (new.target === A_API) {
+      throw new TypeError("Cannot construct Abstract instances directly");
+    }
+  }
+
+  async fetch_data() {
+    this.url = this.set_url();
+    this.method = this.set_method();
+    this.headers = this.set_header();
+    this.body = this.set_body();
+
+    this.pre_fetch(); // Optional validation logic
+
+    let responseData;
+    try {
+      const options = {
+        method: this.method,
+        headers: this.headers,
+      };
+      if (this.body) {
+        options.body = this.body;
       }
-      this.url = this.set_url();
-      this.method = this.set_method();
-      this.headers = this.set_header();
-      this.body = this.set_body();
-    }
+      console.debug("Request Details:", { url: this.url, ...options });
 
-    async fetch_data() {
-      try {
-        const response = await fetch(this.url, {
-          method: this.method,
-          headers: this.headers,
-          body: this.body,
-        });
-    
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        throw error;
+      const response = await fetch(this.url, options);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      this.after_fetch();
+      responseData = await response.json(); // Store the response data
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
     }
 
-    call
+    this.after_fetch(responseData); // Optional processing logic
+  }
 
-    set_url() {
-      throw new Error("set_url() must be implemented in subclass");
-    }
+  set_url() {
+    throw new Error("set_url() must be implemented in the subclass of A_API.");
+  }
 
-    set_method() {
-      throw new Error("set_body() must be implemented in subclass");
-    }
-    
-    set_header() {
-      throw new Error("set_header() must be implemented in subclass");
-    }
-  
-    set_body() {
-      throw new Error("set_body() must be implemented in subclass");
-    }
+  set_method() {
+    throw new Error("set_method() must be implemented in the subclass of A_API.");
+  }
 
-    after_fetch() {
-      throw new Error("after_fetch() must be implemented in subclass");
-    }
+  set_header() {
+    return { 'Content-Type': 'application/json' }; // Default headers
+  }
+
+  set_body() {
+    return null; // Default for GET/DELETE requests
+  }
+
+  pre_fetch() {
+    // Optional validation logic
+  }
+
+  after_fetch(responseData) {
+    // Optional processing logic
+  }
 }

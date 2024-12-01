@@ -38,7 +38,7 @@ export class Images {
                 if (!response.ok) throw new Error(`Failed to load ${filename}`);
                 const fileBlob = await response.blob();  // แปลงเป็น binary data
                 this.#files[filename] = URL.createObjectURL(fileBlob); // สร้าง URL สำหรับไฟล์
-                console.log(this.#files[filename])
+                // console.log(this.#files[filename])
             } catch (error) {
                 console.error(error);
             }

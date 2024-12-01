@@ -29,8 +29,8 @@ export class OAuth42API extends A_API {
         return null; // ไม่ใช้ body ในกรณีนี้
     }
 
-    after_fetch() {
+    after_fetch(responseData) {
         console.log('OAuth authorization request sent successfully!');
-        window.location.href = response.url;
+        window.location.href = responseData.url;
     }
 }

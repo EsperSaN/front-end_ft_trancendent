@@ -74,64 +74,62 @@ export class GuestLoginPage extends Component {
               
           <h1>LOGIN</h1>
 
-          <div class="form-floating mb-3">
-              <input type="username" class="form-control" id="floatingInput" placeholder="name@example.com">
-              <label for="floatingInput">Username</label>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usernameInput" placeholder="Username" required>
+                <label for="usernameInput">Username</label>
             </div>
-            <div class="form-floating">
-              <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-              <label for="floatingPassword">Password</label>
-          </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+                <label for="passwordInput">Password</label>
+            </div>
 
           <button type="login" class="btn btn-primary">login</button>
 
       </div>
     `
     this.shadowRoot.appendChild(menu);
+
+    super.addComponentEventListener(this.shadowRoot.querySelector(".btn-primary"),
+    "click",
+    this.login_as_guest);
   }
 
-  login42() {
-    console.log("HI!!!");
-  }
+  async login_as_guest()
+  {
+    const username = this.shadowRoot.getElementById("usernameInput").value;
+    const password = this.shadowRoot.getElementById("passwordInput").value;
+
+	// Create the request body
+	const requestBody = {
+		username: username,
+		password: password,
+	};
+
+	// Set up the request headers and options for a POST request
+	let requestHeader = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(requestBody)  // Convert the JavaScript object to a JSON string
+	};
+
+	// Fetch data from the server with a POST request
+	const response = await fetch("http://localhost:9000/auth/login/", requestHeader);
+  const responseData = await response.json();
+
+	// Handle the response
+    if (response.status >= 200 && response.status <= 299) {
+        console.log("login as guset successful");
+        console.log("Response data:", responseData);
+        window.Router.navigate('/game-menu-page/');
+    } else {
+        console.log("Failed with status:", response.status);
+        console.log("Response error data:", responseData);
+    }
+  } 
+
 }
-
-document.addEventListener('click', function(event) {
-  event.preventDefault();
-
-  // Get the href attribute of the clicked element
-  const href = event.target.getAttribute('href');
-
-  // Ignore clicks where href is null or undefined
-  if (!href) {
-      return;
-  }
-
-  const loginType = href.replace('#', '');
-  if (loginType === "42Login") {
-      oauth42Api();
-  }
-});
-
-async function oauth42Api() {
-  const clientId = 'u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227';
-  const redirectUri = 'http://localhost:8000/';
-  const responseType = 'code';
-
-  const params = new URLSearchParams({
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      response_type: responseType
-  });
-  const Oauth42Uri = `http://api.intra.42.fr/oauth/authorize?${params.toString()}`;
-  console.log("Oauth42Uri = " + Oauth42Uri);
-  let requestHeader = {
-      method: 'GET',
-      redirect: 'manual',
-  };
-  let response = await fetch(Oauth42Uri, requestHeader);
-  sessionStorage.setItem('oauthRedirectInProgress', true);
-  window.location.href = response.url;
-}
-
 
 customElements.define(name, GuestLoginPage);

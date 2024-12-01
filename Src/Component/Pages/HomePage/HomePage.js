@@ -77,11 +77,11 @@ const componentStyle = `
 
     this.addComponentEventListener( this.shadowRoot.querySelector("#guestLogin"),
                                     "click",
-                                    () => window.Router.navigate('/guest-login/'));
+                                    () => window.Router.navigate('/guest-login-page/'));
                                     
     this.addComponentEventListener( this.shadowRoot.querySelector("#register"),
                                     "click",
-                                    () => window.Router.navigate('/register/'));
+                                    () => window.Router.navigate('/register-page/'));
   }
 
   async login42()

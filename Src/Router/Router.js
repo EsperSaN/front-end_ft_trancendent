@@ -119,6 +119,7 @@ export class Router {
       this.customElement = customElement;
       this.#setPathParameters();
       this.#setPathRegex();
+      console.log("build" + path);
     }
   
     #setPathParameters() {

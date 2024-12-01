@@ -22,8 +22,7 @@ class OAuthCodeAPI extends A_API {
         return null;
     }
 
-    // ฟังก์ชันหลังจากดึงข้อมูลเสร็จ
-    after_fetch(data) {
-        console.log('Backend response:', data);
+    after_fetch(responseData) {
+        console.log('Backend response:', responseData);
     }
 }
