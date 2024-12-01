@@ -175,11 +175,11 @@ export class GameMenuPage extends Component {
 
     super.addComponentEventListener( this.shadowRoot.querySelector("#play"),
                                     "click",
-                                    () => window.Router.navigate('/play/'));
+                                    () => window.Router.navigate('/play-menu-page/'));
 
     super.addComponentEventListener( this.shadowRoot.querySelector("#editProfile"),
                                     "click",
-                                    () => window.Router.navigate('/edit-profile/'));
+                                    () => window.Router.navigate('/edit-profile-page/'));
 
     super.addComponentEventListener(this.shadowRoot.querySelector(".btn-primary"),
                                     "click",

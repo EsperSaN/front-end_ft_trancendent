@@ -12,6 +12,9 @@ import { HomePage }  from "./Component/Pages/HomePage/HomePage.js";
 import { GuestLoginPage }  from "./Component/Pages/GuestLoginPage/GuestLoginPage.js";
 import { RegisterPage }  from "./Component/Pages/RegisterPage/RegisterPage.js";
 import { GameMenuPage }  from "./Component/Pages/GameMenuPage/GameMenuPage.js";
+import { PlayMenuPage }  from "./Component/Pages/PlayMenuPage/PlayMenuPage.js";
+import { EditProfilePage }  from "./Component/Pages/EditProfilePage/EditProfilePage.js";
+import { MatchMakingPage }  from "./Component/Pages/MatchMakingPage/MatchMakingPage.js";
 
 export {        Component,
                 LoadingPage,
@@ -19,6 +22,9 @@ export {        Component,
                 GuestLoginPage,
                 RegisterPage,
                 GameMenuPage,
+                EditProfilePage,
+                PlayMenuPage,
+                MatchMakingPage,
 };
 
 // Router and Route

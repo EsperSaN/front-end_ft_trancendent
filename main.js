@@ -20,6 +20,9 @@ async function initApp() {
         new App.Route('/guest-login-page/', 'guest-login-page'),
         new App.Route('/register-page/', 'register-page'),
         new App.Route('/game-menu-page/', 'game-menu-page'),
+        new App.Route('/play-menu-page/', 'play-menu-page'),
+        new App.Route('/edit-profile-page/', 'edit-profile-page'),
+        new App.Route('/match-making-page/', 'match-making-page'),
         new App.Route('/loading/', 'loading-page'),
     ]);
     window.Router = Router; // make Router as a global object
