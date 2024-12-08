@@ -126,12 +126,14 @@ export class RegisterPage extends Component {
     const username = this.shadowRoot.getElementById("usernameInput").value;
     const email = this.shadowRoot.getElementById("emailInput").value;
     const password = this.shadowRoot.getElementById("passwordInput").value;
+    const confirm_password = this.shadowRoot.getElementById("confirmPasswordInput").value;
 
 	// Create the request body
 	const requestBody = {
 		username: username,
 		email: email,
 		password: password,
+        confirm_password: confirm_password,
 	};
 
 	// Set up the request headers and options for a POST request

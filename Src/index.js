@@ -27,6 +27,11 @@ export {        Component,
                 MatchMakingPage,
 };
 
+// Popup
+import { OtpPopup }  from "./Component/Popup/OtpPopup/OtpPopup.js";
+
+export { OtpPopup }
+
 // Router and Route
 import { Router, Route } from "./Router/Router.js";
 

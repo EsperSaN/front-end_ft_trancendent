@@ -1,4 +1,5 @@
 import { Component } from "../../Component.js";
+import { setCookie } from "../../../../utils.js";
 
 const name = "guest-login-page";
 
@@ -123,12 +124,13 @@ export class GuestLoginPage extends Component {
     if (response.status >= 200 && response.status <= 299) {
         console.log("login as guset successful");
         console.log("Response data:", responseData);
+        setCookie("access", 7, responseData.access);
         window.Router.navigate('/game-menu-page/');
     } else {
         console.log("Failed with status:", response.status);
         console.log("Response error data:", responseData);
     }
-  } 
+  }
 
 }
 

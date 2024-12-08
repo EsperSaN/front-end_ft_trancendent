@@ -39,7 +39,6 @@ export class Component extends HTMLElement {
         bootstrapScript.integrity = 'sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy';
         bootstrapScript.crossOrigin = 'anonymous';
         document.head.appendChild(bootstrapScript);
-
         this.shadowRoot.appendChild(bootstrapScript);
       }
     }

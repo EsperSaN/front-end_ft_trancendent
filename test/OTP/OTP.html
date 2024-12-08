@@ -21,6 +21,7 @@
           width: 50px;
           height: 50px;
           font-size: 1.5rem;
+          border: #1e4950 3px solid;
         }
 
         #otp
@@ -33,13 +34,17 @@
 
         .otp-frame
         {
-            background-color: rgba(146,220,253, 0.8);
-            height: 50vh;
-            width: 40vw;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            height: 100vh;
+            width: 100vw;
             border-radius: 15px;
             padding: 5%;
             border: 30px;
-            border: #1e4950 3px solid;
         }
 
         .verify-title{
@@ -50,6 +55,16 @@
             font-size: 30px;
         }
 
+        #button-row{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #button-row button{
+            margin-right: 1vw;
+            margin-left: 1vw;
+        }
+
     </style>
 
     <div id="DynamicContent">
@@ -57,32 +72,29 @@
         <video autoplay loop muted id = "video-background">
             <source src = "../../BackUp/GraphicElement/BackGroundVideo.mp4" type="video/mp4" />
         </video>
-
-        <div class = "menu">
-
-            <img id = "MeowPongTitle" src="../../BackUp/GraphicElement/MeowPongTitle.png">
-        
-            <div class = "container-sm otp-frame">
-                    
-                <div class = "verify-title"> Please enter the one time password to verify your account </div>
-
-                <div id="otp" class="inputs d-flex flex-row justify-content-center mt-3">
+    
+        <div class = "otp-frame">
                 
-                    <input class="m-2 text-center form-control rounded" type="text" id="otp-1" maxlength="1">
-                    <input class="m-2 text-center form-control rounded" type="text" id="otp-2" maxlength="1">
-                    <input class="m-2 text-center form-control rounded" type="text" id="otp-3" maxlength="1">
-                    <input class="m-2 text-center form-control rounded" type="text" id="otp-4" maxlength="1">
-                    <input class="m-2 text-center form-control rounded" type="text" id="otp-5" maxlength="1">
-                    <input class="m-2 text-center form-control rounded" type="text" id="otp-6" maxlength="1">
-                
-                </div>
+            <div class = "verify-title"> Please enter the one time password to verify your account </div>
 
-                <button class="btn btn-primary Validate-button"> Validate </button>
-
-                <!-- https://bbbootstrap.com/snippets/bootstrap-5-verify-otp-validation-form-inputs-78878858 -->
-
+            <div id="otp" class="inputs d-flex flex-row justify-content-center mt-3">
+            
+                <input class="m-2 text-center form-control rounded" type="text" id="otp-1" maxlength="1">
+                <input class="m-2 text-center form-control rounded" type="text" id="otp-2" maxlength="1">
+                <input class="m-2 text-center form-control rounded" type="text" id="otp-3" maxlength="1">
+                <input class="m-2 text-center form-control rounded" type="text" id="otp-4" maxlength="1">
+                <input class="m-2 text-center form-control rounded" type="text" id="otp-5" maxlength="1">
+                <input class="m-2 text-center form-control rounded" type="text" id="otp-6" maxlength="1">
+            
             </div>
-        
+
+            <div id = "button-row">
+                <button class="btn btn-primary btn btn-danger Validate-button"> Cancel </button>
+                <button class="btn btn-primary Validate-button"> Submit </button>
+            </div>
+
+            <!-- https://bbbootstrap.com/snippets/bootstrap-5-verify-otp-validation-form-inputs-78878858 -->
+
         </div>
         
     </div>
