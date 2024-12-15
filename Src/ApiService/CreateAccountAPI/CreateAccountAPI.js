@@ -13,22 +13,13 @@ export class CreateAccountAPI extends A_API {
         return "POST";
     }
 
-    set_header() {
-        return {
-            'Content-Type': 'application/json'
-        };
-    }
-
-    set_body(username, email, password, confirmpassword) {
-        console.log("username :", username);
-        console.log("email :", email);
-        console.log("password :", password);
-        console.log("confirmpassword :", confirmpassword);
+    set_body(username, email, password, confirm_password) {
+        console.log(username, email, password, confirm_password);
         this.body = JSON.stringify({
             username: username,
             email: email,
             password: password,
-            confirmpassword: confirmpassword
+            confirm_password: confirm_password
         });
     }
 
@@ -50,24 +41,18 @@ export class CreateAccountAPI extends A_API {
             console.error("empthy password data")
             throw new Error("Validation failed: Empty password");
         }
-        if(!body.confirmpassword || body.confirmpassword === ""){
+        if(!body.confirmpassword || body.confirm_password === ""){
             console.error("empthy confirmpassword data")
             throw new Error("Validation failed: Empty confirmpassword");
         }
     }
 
-    after_fetch(responseData) {
-        if (responseData.message !== 'Successful') {
-            return {
-                success: false,
-                message: "The email or username already exists in the database."
-            };
+    async after_fetch(response) {
+        if (response.status >= 200 && response.status <= 299) {
+            console.log("Successful");
+            window.Router.navigate('/guest-login/')
         } else {
-            return {
-                success: true,
-                message: "Account created successfully.",
-                data: responseData
-            };
+            console.log("Failed with status:", response.status);
         }
     }
 }

@@ -1,5 +1,5 @@
 import * as App from './Src/index.js';
-import {handle_42Redirect} from './utils.js';
+import {handle_42Redirect, fetchData} from './utils.js';
 
 async function initApp() {
     const Images = new App.Images();
@@ -11,9 +11,7 @@ async function initApp() {
         [new App.CreateAccountAPI()]
     );
     window.APIs = APIs;
-
-    // await APIs.load();
-
+    window.fetchData = fetchData;
     const app = document.querySelector('#App');
     const Router = new App.Router(app, [
         new App.Route('', 'home-page'),

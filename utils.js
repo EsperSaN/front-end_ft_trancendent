@@ -16,6 +16,10 @@ export function	setCookie(name, day, value, path = "/")
 	document.cookie = `${name}=${value}; expires=${date}; path=${path};`;
 }
 
+export function deleteCookie(name, path = "/") {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path};`;
+}
+
 export function handle_42Redirect()
 {
     let is_oauthRedirectInProgress = localStorage.getItem('oauthRedirectInProgress');
@@ -81,3 +85,62 @@ function getOauthCode()
     console.log("oauthCode: " + oauthCode);
     return  oauthCode;
 }
+
+export async function fetchData(endpoint, body, method = 'GET', is_reqauth = true, baseUri = 'http://localhost:9000/') {
+  const access = getCookie("access") || '';
+  let header = { 'Content-Type': 'application/json' };
+
+  if (is_reqauth) {
+    header['Authorization'] = `Bearer ${access}`;
+  }
+  console.log(header);
+  const url = baseUri + endpoint;
+  const options = {
+    method,
+    headers: { ...header },
+  };
+
+  if (method !== 'GET' && method !== 'HEAD' && body) {
+    options.body = header['Content-Type'] === 'application/json'
+      ? JSON.stringify(body)
+      : body;
+  }
+
+  try {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      const errorData = response.headers.get('Content-Type')?.includes('application/json')
+        ? await parseResponse(response)
+        : await response.text();
+      throw { status: response.status, body: errorData };
+    }
+
+    return await parseResponse(response);
+  } catch (error) {
+    if (error.status && error.body) {
+      console.error(`HTTP Error ${error.status}:`, error.body);
+      throw error;
+    } else {
+      console.error('Unexpected fetch error:', error);
+      throw new Error('Unexpected fetch error');
+    }
+  }
+}
+
+async function parseResponse(response) {
+  const contentType = response.headers.get('Content-Type');
+  if (contentType && contentType.includes('application/json')) {
+    return await response.json();
+  }
+  return await response.text();
+}
+
+export async function getProfileData(){
+  const res = await fetchData('/auth/users/', null);
+  console.log('in the getProfileData');
+  console.log(res[0]);
+  return res[0];
+}
+
+

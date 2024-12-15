@@ -134,54 +134,58 @@ const componentStyle = `
 
 export class GameMenuPage extends Component { 
   constructor() {
-    super(name, componentStyle);
+    super(componentStyle);
+  }
+
+  render() {
+    const meowTitleSrc = window.Images.getFile("MeowPongTitle.png");
+    const default_profile = window.Images.getFile("1.png");
+
+    return `
+
+    <div class = "flex-container">
+        <div class = "list-Block">
+            <img id = "MeowPongTitle" src=${meowTitleSrc}>
+            <ul>
+                <li id="play"> Play </li>
+                <li id="editProfile"> Edit Profile </li>
+                <li id="logout"> Logout </li>
+            </ul>
+        </div>
+        <div class = "profile-Block">
+            <div id = "profileFrame">
+                <img id = "profileImage" src=${default_profile}>
+            </div>
+            <div id = "profileName"></div>
+            <ul id = "stat">
+                <li> <div>win streaks</div> <div>1</div> </li>
+                <li> <div>win rate</div>    <div>1</div> </li>
+                <li> <div>Total Game</div>  <div>1</div> </li>
+                <li> <div>Rank</div>        <div>1</div> </li>
+            </ul>
+            <div id = "profileLine"></div>
+            <div id = "profileFriendTiTle">Friend list</div>
+            <ul id = "profileFriendListTiTle">
+                <li> <div>win rate</div>    <i class="bi bi-chat-dots">1</i> </li>
+                <li> <div>Total Game</div>  <i class="bi bi-chat-dots">1</i> </li>
+                <li> <div>Rank</div>        <i class="bi bi-chat-dots">1</i> </li>
+            </ul>
+        </div>
+    </div>
+    
+    `;
   }
 
   postCreate() {
-    const meowTitleSrc = window.Images.getFile("MeowPongTitle.png");
-    const default_profile = window.Images.getFile("1.png");
-    const flex_container = document.createElement('div');
-    flex_container.classList.add("flex-container");
-	flex_container.innerHTML	=`
-	<div class = "list-Block">
-		<img id = "MeowPongTitle" src=${meowTitleSrc}>
-		<ul>
-			<li id="play"> Play </li>
-			<li id="editProfile"> Edit Profile </li>
-			<li id="logout"> Logout </li>
-		</ul>
-	</div>
-	<div class = "profile-Block">
-		<div id = "profileFrame">
-			<img id = "profileImage" src=${default_profile}>
-		</div>
-		<div id = "profileName"></div>
-		<ul id = "stat">
-			<li> <div>win streaks</div> <div>1</div> </li>
-			<li> <div>win rate</div>    <div>1</div> </li>
-			<li> <div>Total Game</div>  <div>1</div> </li>
-			<li> <div>Rank</div>        <div>1</div> </li>
-		</ul>
-		<div id = "profileLine"></div>
-		<div id = "profileFriendTiTle">Friend list</div>
-		<ul id = "profileFriendListTiTle">
-			<li> <div>win rate</div>    <i class="bi bi-chat-dots">1</i> </li>
-			<li> <div>Total Game</div>  <i class="bi bi-chat-dots">1</i> </li>
-			<li> <div>Rank</div>        <i class="bi bi-chat-dots">1</i> </li>
-		</ul>
-	</div>
-    `;
-    this.shadowRoot.appendChild(flex_container);
-
-    super.addComponentEventListener( this.shadowRoot.querySelector("#play"),
+    super.addComponentEventListener( this.querySelector("#play"),
                                     "click",
                                     () => window.Router.navigate('/play-menu-page/'));
 
-    super.addComponentEventListener( this.shadowRoot.querySelector("#editProfile"),
+    super.addComponentEventListener( this.querySelector("#editProfile"),
                                     "click",
                                     () => window.Router.navigate('/edit-profile-page/'));
 
-    super.addComponentEventListener(this.shadowRoot.querySelector(".btn-primary"),
+    super.addComponentEventListener(this.querySelector(".btn-primary"),
                                     "click",
                                     this.logout);
   }

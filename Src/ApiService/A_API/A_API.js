@@ -3,6 +3,9 @@ export class A_API {
     if (new.target === A_API) {
       throw new TypeError("Cannot construct Abstract instances directly");
     }
+    this.defaultOptions = {
+      credentials: 'include', // ตัวอย่างการตั้งค่า Default
+    };
   }
 
   async fetch_data() {
@@ -36,6 +39,7 @@ export class A_API {
     }
 
     this.after_fetch(responseData); // Optional processing logic
+    return responseData;
   }
 
   set_url() {
@@ -47,7 +51,9 @@ export class A_API {
   }
 
   set_header() {
-    return { 'Content-Type': 'application/json' }; // Default headers
+    return this.method === 'GET' || this.method === 'DELETE'
+    ? {}
+    : { 'Content-Type': 'application/json' }; // Default headers
   }
 
   set_body() {
@@ -60,5 +66,13 @@ export class A_API {
 
   after_fetch(responseData) {
     // Optional processing logic
+  }
+
+  add_query_params(url, params) {
+    const urlObj = new URL(url);
+    Object.entries(params).forEach(([key, value]) => {
+      urlObj.searchParams.append(key, value);
+    });
+    return urlObj.toString();
   }
 }

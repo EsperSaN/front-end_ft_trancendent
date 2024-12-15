@@ -3,6 +3,7 @@ import { Component } from "../../Component.js";
 const name = "register-page";
 
 const componentStyle = `
+
     .menu {
         position: absolute;
         top: 50%;
@@ -75,89 +76,99 @@ const componentStyle = `
         #backButton {
         display: flex;
         }
+
 `;
 
 export class RegisterPage extends Component { 
   constructor() {
-    super(name, componentStyle);
+    super(componentStyle);
+  }
+
+  render() {
+    const meowTitleSrc = window.Images.getFile("MeowPongTitle.png");
+    return `
+    
+        <div class="menu">
+            <img id="MeowPongTitle" src=${meowTitleSrc} alt="MeowPong Title">
+            
+            <div class="container-sm frame">
+            <h1>REGISTER</h1>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="usernameInput" placeholder="Username" required>
+                <label for="usernameInput">Username</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" required>
+                <label for="emailInput">Email</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+                <label for="passwordInput">Password</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Password">
+                <label for="confirmPasswordInput">Confirm Password</label>
+            </div>
+
+            <button type="button" class="btn btn-primary">Create Account</button>
+            </div>
+        </div>
+
+        <modal-component></modal-component>
+    `;
   }
 
   postCreate() {
-    const meowTitleSrc = window.Images.getFile("MeowPongTitle.png");
-    const menu = document.createElement('div');
-    menu.classList.add("menu");
-	menu.innerHTML	=`
-    <img id = "MeowPongTitle" src=${meowTitleSrc}>
-
-    <div class = "container-sm frame">
-        <h1>REGISTER</h1>
-
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="usernameInput" placeholder="Username" required>
-            <label for="usernameInput">Username</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="emailInput" placeholder="name@example.com" required>
-            <label for="emailInput">Email</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="passwordInput" placeholder="Password">
-            <label for="passwordInput">Password</label>
-        </div>
-
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="confirmPasswordInput" placeholder="Password">
-            <label for="confirmPasswordInput">Confirm Password</label>
-        </div>
-
-        <button type="button" class="btn btn-primary">Create Account</button>
-    </div>`;
-    this.shadowRoot.appendChild(menu);
-
-    super.addComponentEventListener(this.shadowRoot.querySelector(".btn-primary"),
+    super.addComponentEventListener(this.querySelector(".btn-primary"),
                                     "click",
                                     this.create_account);
   }
 
-  async create_account()
-  {
-    const username = this.shadowRoot.getElementById("usernameInput").value;
-    const email = this.shadowRoot.getElementById("emailInput").value;
-    const password = this.shadowRoot.getElementById("passwordInput").value;
-    const confirm_password = this.shadowRoot.getElementById("confirmPasswordInput").value;
-
-	// Create the request body
-	const requestBody = {
-		username: username,
-		email: email,
-		password: password,
-        confirm_password: confirm_password,
-	};
-
-	// Set up the request headers and options for a POST request
-	let requestHeader = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(requestBody)  // Convert the JavaScript object to a JSON string
-	};
-
-	// Fetch data from the server with a POST request
-	const response = await fetch("http://localhost:9000/auth/register/", requestHeader);
-
-	// Handle the response
-    if (response.status >= 200 && response.status <= 299) {
-        console.log("Successful");
-        window.Router.navigate('/guest-login/')
-    } else {
-        const responseData = await response.json();
-        console.log("Failed with status:", response.status);
-        console.log("Response error data:", responseData);
+  async create_account() {
+    const username = this.querySelector("#usernameInput").value;
+    const email = this.querySelector("#emailInput").value;
+    const password = this.querySelector("#passwordInput").value;
+    const confirm_password = this.querySelector("#confirmPasswordInput").value;
+  
+    const requestBody = {
+      username: username,
+      email: email,
+      password: password,
+      confirm_password: confirm_password,
+    };
+  
+    try {
+        const res = await fetchData('auth/register/', requestBody, 'POST', false);
+        const errModal = this.querySelector("modal-component");
+        errModal.set_title_style({
+          color: 'green',
+          fontWeight: 'bold',
+          fontSize: '36px'
+        });
+        errModal.openModal("Notification", `<div>Create Account Successful!</div>`);
+        window.Router.navigate('/guest-login-page/')
+    } catch (error) {
+        if (error.status && error.body) {
+          const errorMessages = Object.entries(error.body)
+            .map(([field, messages]) => `<div>${field}: ${messages}</div>`) 
+            .join('\n'); 
+          const errModal = this.querySelector("modal-component");
+          errModal.set_title_style({
+            color: 'red',
+            fontWeight: 'bold',
+            fontSize: '36px'
+          });
+          errModal.openModal("Error", `<div>Registration failed </div> ${errorMessages}`);
+        } else {
+          const errModal = this.querySelector("modal-component");
+          errModal.openModal("Error", 'Unexpected error occurred during registration.');
+        }
     }
-  } 
+  }
 }
 
 customElements.define(name, RegisterPage);

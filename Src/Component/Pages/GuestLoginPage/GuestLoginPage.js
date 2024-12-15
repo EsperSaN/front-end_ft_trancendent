@@ -26,7 +26,7 @@ const componentStyle = `
     border: #1e4950 3px solid;
     border-radius: 30px;
     background-color: rgba(146,220,253, 0.5);
-      padding: 35px;
+    padding: 35px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -57,23 +57,27 @@ const componentStyle = `
       margin: 0;
       width: max(100%, 300px);
   }
+
+  #error-msg{
+      color: red;
+  }
 `;
 
 export class GuestLoginPage extends Component { 
   constructor() {
-    super(name, componentStyle);
+    super(componentStyle);
   }
 
-  postCreate() {
+  render() {
     const meowTitleSrc = window.Images.getFile("MeowPongTitle.png");
-    const menu = document.createElement('div');
-    menu.classList.add("menu");
-    menu.innerHTML = `
-      <img id = "MeowPongTitle" src=${meowTitleSrc}>
-  
-      <div class = "container-sm frame">
-              
-          <h1>LOGIN</h1>
+    return `
+
+      <div class = "menu">
+        <img id = "MeowPongTitle" src=${meowTitleSrc}>
+    
+        <div class = "container-sm frame">
+                
+            <h1>LOGIN</h1>
 
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="usernameInput" placeholder="Username" required>
@@ -85,21 +89,26 @@ export class GuestLoginPage extends Component {
                 <label for="passwordInput">Password</label>
             </div>
 
-          <button type="login" class="btn btn-primary">login</button>
+            <div id = "error-msg" class = "text-start"></div>
 
+            <button type="login" class="btn btn-primary">login</button>
+
+        </div>
       </div>
-    `
-    this.shadowRoot.appendChild(menu);
 
-    super.addComponentEventListener(this.shadowRoot.querySelector(".btn-primary"),
+      <enable-2fa-modal></enable-2fa-modal>
+    `;
+  }
+  postCreate() {
+    super.addComponentEventListener(this.querySelector(".btn-primary"),
     "click",
     this.login_as_guest);
   }
 
   async login_as_guest()
   {
-    const username = this.shadowRoot.getElementById("usernameInput").value;
-    const password = this.shadowRoot.getElementById("passwordInput").value;
+    const username = this.querySelector("#usernameInput").value;
+    const password = this.querySelector("#passwordInput").value;
 
 	// Create the request body
 	const requestBody = {
@@ -107,31 +116,25 @@ export class GuestLoginPage extends Component {
 		password: password,
 	};
 
-	// Set up the request headers and options for a POST request
-	let requestHeader = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(requestBody)  // Convert the JavaScript object to a JSON string
-	};
-
-	// Fetch data from the server with a POST request
-	const response = await fetch("http://localhost:9000/auth/login/", requestHeader);
-  const responseData = await response.json();
-
-	// Handle the response
-    if (response.status >= 200 && response.status <= 299) {
-        console.log("login as guset successful");
-        console.log("Response data:", responseData);
-        setCookie("access", 7, responseData.access);
-        window.Router.navigate('/game-menu-page/');
-    } else {
-        console.log("Failed with status:", response.status);
-        console.log("Response error data:", responseData);
+  try 
+  {
+    const res = await fetchData('auth/login/', requestBody, 'POST', false);
+    setCookie("access", 7, res.access);
+    window.Router.navigate('/game-menu-page/');
+  } 
+  catch (error) 
+  {
+    if(error.body.detail === '2FA token required')
+    {
+      const modal = this.querySelector('enable-2fa-modal');
+      modal.openModal();
+    }
+    else
+    {
+      alert("error: " + error.body.detail);
     }
   }
-
+}
 }
 
 customElements.define(name, GuestLoginPage);

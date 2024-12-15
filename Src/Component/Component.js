@@ -1,46 +1,27 @@
 export class Component extends HTMLElement {
 
-    #name;
-    #component;
     #componentStyle;
     #componentEventListeners;
     #is_create;
   
-    constructor(name, componentStyle = "") {
+    constructor(componentStyle = ":host { display: block; }") {
       super();
-      this.#name = name;
       this.#componentStyle = componentStyle;
-      this.attachShadow({ mode: "open" });
       this.#componentEventListeners = [];
       this.#is_create = false;
     }
   
-    connectedCallback() {
-      if (!this.#is_create) {
-        this.#component = document.createElement(this.#name);
-
-        const bootstrap = document.createElement('link');
-        bootstrap.setAttribute('rel', 'stylesheet');
-        bootstrap.setAttribute('href', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css');
-        this.shadowRoot.appendChild(bootstrap);
-
+    connectedCallback()
+    {
+      if (!this.#is_create) 
+      {
         const style = document.createElement('style');
-        style.textContent = this.#componentStyle;
-        this.shadowRoot.appendChild(style);
-
-        if (!this.#component) {
-          return;
-        }
+        style.innerHTML = this.#componentStyle;
+        this.innerHTML = this.render();
+        this.appendChild(style);
         this.#is_create = true;
-        this.postCreate();
-
-        const bootstrapScript = document.createElement('script');
-        bootstrapScript.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js';
-        bootstrapScript.integrity = 'sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy';
-        bootstrapScript.crossOrigin = 'anonymous';
-        document.head.appendChild(bootstrapScript);
-        this.shadowRoot.appendChild(bootstrapScript);
       }
+      this.postCreate();
     }
   
     addComponentEventListener(element, event, callback, callbackInstance=this) {
@@ -80,19 +61,16 @@ export class Component extends HTMLElement {
       }
       this.#componentEventListeners = [];
     }
+
+    disconnectedCallback() {
+      this.removeAllComponentEventListeners();
+    }
   
     postCreate() {
+
     }
 
     render() {
-      const appElement = document.querySelector("#App");
-      if (appElement) {
-        appElement.innerHTML = "";
-        appElement.appendChild(this);
-      }
-    }
-
-    getElementName() {
-      return this.#name;
+      return document.createDocumentFragment();;
     }
   }

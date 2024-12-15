@@ -31,23 +31,23 @@ const componentStyle = `
 
 export class MatchMakingPage extends Component { 
   constructor() {
-    super(name, componentStyle);
+    super(componentStyle);
   }
 
-  postCreate() {
-    const match_making = document.createElement('div');
-    match_making.classList.add("match-making");
-	match_making.innerHTML	=`
-        <div class = "match-making">
-            <div class = "match-making-title">Match Making ...</div>
-            <div class="spinner-border text-warning spinner-custom" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <button type="button" class="btn btn-danger btn-lg">Stop!</button>
+  render()
+  {
+    return `
+
+    <div class="match-making">
+        <div class="match-making-title">Match Making ...</div>
+        <div class="spinner-border text-warning spinner-custom" role="status">
+        <span class="visually-hidden">Loading...</span>
         </div>
+        <button type="button" class="btn btn-danger btn-lg">Stop!</button>
+    </div>
+    
     `;
-    this.shadowRoot.appendChild(match_making);
   }
 }
-``
+
 customElements.define(name, MatchMakingPage);

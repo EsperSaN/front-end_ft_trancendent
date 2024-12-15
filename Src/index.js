@@ -28,9 +28,10 @@ export {        Component,
 };
 
 // Popup
-import { OtpPopup }  from "./Component/Popup/OtpPopup/OtpPopup.js";
+import { Modal }  from "./Component/Popup/Modal/Modal.js";
+import { Enable2FAModal }  from "./Component/Popup/Enable2FAModal/Enable2FAModal.js";
 
-export { OtpPopup }
+export { Modal, Enable2FAModal };
 
 // Router and Route
 import { Router, Route } from "./Router/Router.js";

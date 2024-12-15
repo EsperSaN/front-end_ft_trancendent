@@ -53,56 +53,42 @@ const componentStyle = `
   export class HomePage extends Component 
   { 
   constructor() {
-    super(name, componentStyle);
+    super(componentStyle);
+  }
+
+  render()
+  {
+    const imgSrc = window.Images.getFile("MeowPongTitle.png");
+    return `
+    <div class = "menu">
+      <img id = "MeowPongTitle" src=${imgSrc}>
+
+      <ul id="loginOption">
+          <li id="login42"> 42 Login </li>
+          <li id="guestLogin"> Guest Login </li>
+          <li id="register"> Register </li>
+      </ul>
+    </div>
+    `;
   }
 
   postCreate() {
-    const menu = document.createElement('div');
-    menu.classList.add("menu");
-    const imgSrc = window.Images.getFile("MeowPongTitle.png");
-    menu.innerHTML = `
-    <img id = "MeowPongTitle" src=${imgSrc}>
-
-    <ul id="loginOption">
-        <li id="login42"> 42 Login </li>
-        <li id="guestLogin"> Guest Login </li>
-        <li id="register"> Register </li>
-    </ul>
-    `
-    this.shadowRoot.appendChild(menu);
-
-    super.addComponentEventListener(  this.shadowRoot.querySelector("#login42"),
+    this.addComponentEventListener(  this.querySelector("#login42"),
                                       "click",
                                       this.login42);
 
-    this.addComponentEventListener( this.shadowRoot.querySelector("#guestLogin"),
+    this.addComponentEventListener( this.querySelector("#guestLogin"),
                                     "click",
                                     () => window.Router.navigate('/guest-login-page/'));
                                     
-    this.addComponentEventListener( this.shadowRoot.querySelector("#register"),
+    this.addComponentEventListener( this.querySelector("#register"),
                                     "click",
                                     () => window.Router.navigate('/register-page/'));
   }
 
-  async login42()
+  login42()
   {
-    const clientId = 'u-s4t2ud-8aa7d1799d4b4847f8c1284abe03fb14a44fce8c230bb53da7a86efcb26ae227';
-    const redirectUri = 'http://localhost:8000/';
-    const responseType = 'code';
-    const params = new URLSearchParams({
-        client_id: clientId,
-        redirect_uri: redirectUri,
-        response_type: responseType
-    });
-    const Oauth42Uri = `http://api.intra.42.fr/oauth/authorize?${params.toString()}`;
-    let requestHeader = {
-        method: 'GET',
-        redirect: 'manual',
-    };
-    let response = await fetch(Oauth42Uri, requestHeader);
-    localStorage.setItem('oauthRedirectInProgress', true);
-    console.log("fetch 42 api success!");
-    window.location.href = response.url;
+    console.log("Hi this is login42")
   }
 }
 
