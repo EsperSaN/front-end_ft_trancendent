@@ -44,4 +44,6 @@ async function oauth42Api() {
     let response = await fetch(Oauth42Uri, requestHeader);
     sessionStorage.setItem('oauthRedirectInProgress', true);
     window.location.href = response.url;
+    const currentURL = window.location.href;
+    console.log(currentURL);
 }

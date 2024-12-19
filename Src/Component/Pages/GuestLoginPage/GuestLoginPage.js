@@ -120,6 +120,7 @@ export class GuestLoginPage extends Component {
   {
     const res = await fetchData('auth/login/', requestBody, 'POST', false);
     setCookie("access", 7, res.access);
+    setCookie("refresh", 7, res.refresh);
     window.Router.navigate('/game-menu-page/');
   } 
   catch (error) 

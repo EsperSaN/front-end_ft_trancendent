@@ -86,9 +86,25 @@ const componentStyle = `
                                     () => window.Router.navigate('/register-page/'));
   }
 
-  login42()
+  async login42()
   {
-    console.log("Hi this is login42")
+    const clientId = 'u-s4t2ud-88eb36033a1e7d562816f36f790d97a4b1230a033379b3d35311e4099b6ff355';
+    const redirectUri = 'http://localhost:8000/index.html';
+    const responseType = 'code';
+
+    const params = new URLSearchParams({
+        client_id: clientId,
+        redirect_uri: redirectUri,
+        response_type: responseType
+    });
+    const Oauth42Uri = `http://api.intra.42.fr/oauth/authorize?${params.toString()}`;
+    const requestHeader = {
+        method: 'GET',
+        redirect: 'manual',
+    };
+    const response = await fetch(Oauth42Uri, requestHeader);
+    sessionStorage.setItem('oauthRedirectInProgress', true);
+    window.location.href = response.url;
   }
 }
 

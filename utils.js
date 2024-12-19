@@ -11,7 +11,7 @@ export function getCookie(CookieName)
 
 export function	setCookie(name, day, value, path = "/")
 {
-	let date = new Date(Date.now() + day * 24 * 60 * 60 * 1000).toUTCString(); // or 864e5
+	let date = new Date(Date.now() + day * 24 * 60 * 60 * 1000).toUTCString();
 	value = encodeURIComponent(value);
 	document.cookie = `${name}=${value}; expires=${date}; path=${path};`;
 }
@@ -20,23 +20,21 @@ export function deleteCookie(name, path = "/") {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=${path};`;
 }
 
-export function handle_42Redirect()
+export async function handle_42Redirect()
 {
-    let is_oauthRedirectInProgress = localStorage.getItem('oauthRedirectInProgress');
-    console.log(is_oauthRedirectInProgress);
+    let is_oauthRedirectInProgress = sessionStorage.getItem('oauthRedirectInProgress');
     if (is_oauthRedirectInProgress == null)
         return ;
-    localStorage.removeItem('oauthRedirectInProgress');
+    sessionStorage.removeItem('oauthRedirectInProgress');
     const oauthCode = getOauthCode();
-    console.log(oauthCode);
-    sendOauthCodeToBackEnd(oauthCode);
-    const jwt = jsonResponse.jwt;
-    setCookie("jwt_token", 365, jwt);
-    const token = getCookie("jwt_token");
+    const res = await sendOauthCodeToBackEnd(oauthCode);
+    setCookie("access", 7, res.access);
+    setCookie("refresh", 7, res.refresh);
+    const access = getCookie("access");
     let requestHeader ={
         method : 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${access}`
         }
     };
     try {
@@ -45,6 +43,7 @@ export function handle_42Redirect()
           const profileDataJson = profileData.json();
           if (profileDataJson) {
             localStorage.setItem('profileData', JSON.stringify(profileDataJson));
+            window.Router.navigate('/game-menu-page/');
           } 
           else {
             console.log("Don't get any data from server");
@@ -58,20 +57,30 @@ export function handle_42Redirect()
       }
 }
 
-function sendOauthCodeToBackEnd(oauthCode) {
-    const oauthToBackEndPath = `http://localhost:9000/auth/callback?code=${oauthCode}`;
-    console.log("here: ", oauthToBackEndPath);
-    try {
-        let requestHeader = {
-            method: 'POST',
-            redirect: 'manual',
-        };
-        const response = fetch(oauthToBackEndPath);
+async function sendOauthCodeToBackEnd(oauthCode) {
+  const oauthToBackEndPath = `http://localhost:9000/auth/callback`;
+  console.log("Sending OAuth code to backend: ", oauthCode);
+
+  try {
+      const requestHeader = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json', // Specify content type
+          },
+          body: JSON.stringify({ code: oauthCode }), // Pass code in body
+          redirect: 'manual',
+      };
+
+      const response = await fetch(oauthToBackEndPath, requestHeader);
+        console.log('sendOauthCodeToBackEnd response')
+        console.log(response);
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`, requestHeader);
         }
-        const data = response.json();
-        return data;
+        const data = await response.json();
+        console.log('sendOauthCodeToBackEnd data');
+        console.log(data);
+        return response;
     } catch (error) {
         console.error('Error sending OAuth code to backend:', error);
         throw error;
@@ -138,8 +147,6 @@ async function parseResponse(response) {
 
 export async function getProfileData(){
   const res = await fetchData('/auth/users/', null);
-  console.log('in the getProfileData');
-  console.log(res[0]);
   return res[0];
 }
 
