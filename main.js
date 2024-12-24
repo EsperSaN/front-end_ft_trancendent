@@ -35,11 +35,17 @@ async function initApp() {
         new App.Route('/play-menu-page/', 'play-menu-page'),
         new App.Route('/edit-profile-page/', 'edit-profile-page'),
         new App.Route('/match-making-page/', 'match-making-page'),
+        new App.Route('/game-play-page/', 'game-play-page'),
         new App.Route('/loading/', 'loading-page'),
     ]);
     window.Router = Router; // make Router as a global object
-    Router.init();
+    let is_oauthRedirectInProgress = sessionStorage.getItem('oauthRedirectInProgress');
+    if (is_oauthRedirectInProgress == null)
+    {
+        console.log("is_oauthRedirectInProgress: " + is_oauthRedirectInProgress);
+        Router.init();
+    }
 }
 
-document.addEventListener('DOMContentLoaded', handle_42Redirect);
 initApp();
+document.addEventListener('DOMContentLoaded', handle_42Redirect);

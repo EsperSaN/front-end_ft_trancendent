@@ -174,9 +174,9 @@ export class PlayMenuPage extends Component {
       <div class ="menu-block">
           <h1 id = "fight-meow"> Fight Meow~ </h1>
           <div id = "meow-pow"><img id = "meow-pow-l" src=${meow_pow_l}> <img id = "meow-pow-r" src=${meow_pow_r}></div>
-          <button id = "match-making" class="btn btn-primary play-button"> Match Making </button>
+          <button id = "match-making" class="btn btn-primary play-button"> Match making </button>
           <button id = "tournament" class="btn btn-primary play-button"> Tournament </button>
-          <button id = "local-play" class="btn btn-primary play-button"> Local Play </button>
+          <button id = "local-play" class="btn btn-primary play-button"> Play with friend </button>
       </div>
     </div>
 
@@ -194,7 +194,7 @@ export class PlayMenuPage extends Component {
 
     super.addComponentEventListener(this.querySelector("#local-play"),
                                     "click",
-                                    () => window.Router.navigate('/local-play-page/'));
+                                    () => window.Router.navigate('/game-play-page/'));
   }
 
   logout()

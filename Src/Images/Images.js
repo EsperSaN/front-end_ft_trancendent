@@ -26,7 +26,10 @@ export class Images {
                         "./Src/Images/file/19.png",
                         "./Src/Images/file/BackGroundVideo.mp4",
                         "./Src/Images/file/MeowBackGroundSong.mp3",
-                        "./Src/Images/file/MeowPongTitle.png"
+                        "./Src/Images/file/MeowPongTitle.png",
+                        "./Src/Images/file/ball.png",
+                        "./Src/Images/file/opponent.png",
+                        "./Src/Images/file/player.png",
         ];
     }
 

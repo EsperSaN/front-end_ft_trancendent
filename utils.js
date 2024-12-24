@@ -25,36 +25,37 @@ export async function handle_42Redirect()
     let is_oauthRedirectInProgress = sessionStorage.getItem('oauthRedirectInProgress');
     if (is_oauthRedirectInProgress == null)
         return ;
-    sessionStorage.removeItem('oauthRedirectInProgress');
     const oauthCode = getOauthCode();
     const res = await sendOauthCodeToBackEnd(oauthCode);
-    setCookie("access", 7, res.access);
-    setCookie("refresh", 7, res.refresh);
-    const access = getCookie("access");
-    let requestHeader ={
-        method : 'GET',
-        headers: {
-            'Authorization': `Bearer ${access}`
-        }
-    };
-    try {
-        const profileData = fetch("http://localhost:9000/auth/user", requestHeader);
-        if (profileData.ok) {
-          const profileDataJson = profileData.json();
-          if (profileDataJson) {
-            localStorage.setItem('profileData', JSON.stringify(profileDataJson));
-            window.Router.navigate('/game-menu-page/');
-          } 
-          else {
-            console.log("Don't get any data from server");
-          }
-        }
-        else {
-          console.log('Error: Response status', profileData.status);
-        }
-      } catch (error) {
-        console.log('Error:', error);
-      }
+    setCookie("access", 7, res.tokens.access);
+    setCookie("refresh", 7, res.tokens.refresh);
+    window.Router.navigate('/game-menu-page/');
+    // const access = getCookie("access");
+    // let requestHeader ={
+    //     method : 'GET',
+    //     headers: {
+    //         'Authorization': `Bearer ${access}`
+    //     }
+    // };
+    // try {
+    //     const profileData = await fetch("http://localhost:9000/auth/user", requestHeader);
+    //     if (profileData.ok) {
+    //       const profileDataJson = profileData.json();
+    //       if (profileDataJson) {
+    //         localStorage.setItem('profileData', JSON.stringify(profileDataJson));
+    //         window.Router.navigate('/game-menu-page/');
+    //       } 
+    //       else {
+    //         console.log("Don't get any data from server");
+    //       }
+    //     }
+    //     else {
+    //       console.log('Error: Response status', profileData);
+    //     }
+    //   } catch (error) {
+    //     console.log('Error:', error);
+    //   }
+    sessionStorage.removeItem('oauthRedirectInProgress');
 }
 
 async function sendOauthCodeToBackEnd(oauthCode) {
@@ -78,9 +79,7 @@ async function sendOauthCodeToBackEnd(oauthCode) {
             throw new Error(`HTTP error! Status: ${response.status}`, requestHeader);
         }
         const data = await response.json();
-        console.log('sendOauthCodeToBackEnd data');
-        console.log(data);
-        return response;
+        return data;
     } catch (error) {
         console.error('Error sending OAuth code to backend:', error);
         throw error;

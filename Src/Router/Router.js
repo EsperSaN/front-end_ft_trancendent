@@ -32,18 +32,18 @@ export class Router {
       return this.#loadRoute(route, parametersValues);
     }
 
-    redirect(newPath) {
-      const newPathWithoutQuery = newPath.split('?')[0];
-      window.history.replaceState({}, '', newPath);
-      const {route, parametersValues} = this.#findMatchingRoute(
-          newPathWithoutQuery,
-      );
-      if (route === null) {
-        console.error(`Route not found`);
-        return null;
-      }
-      return this.#loadRoute(route, parametersValues);
-    }
+    // redirect(newPath) {
+    //   const newPathWithoutQuery = newPath.split('?')[0];
+    //   window.history.replaceState({}, '', newPath);
+    //   const {route, parametersValues} = this.#findMatchingRoute(
+    //       newPathWithoutQuery,
+    //   );
+    //   if (route === null) {
+    //     console.error(`Route not found`);
+    //     return null;
+    //   }
+    //   return this.#loadRoute(route, parametersValues);
+    // }
   
     init() {
       const URI = this.#getURIWithSlash(document.location.pathname);

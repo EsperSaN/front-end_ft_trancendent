@@ -15,6 +15,7 @@ import { GameMenuPage }  from "./Component/Pages/GameMenuPage/GameMenuPage.js";
 import { PlayMenuPage }  from "./Component/Pages/PlayMenuPage/PlayMenuPage.js";
 import { EditProfilePage }  from "./Component/Pages/EditProfilePage/EditProfilePage.js";
 import { MatchMakingPage }  from "./Component/Pages/MatchMakingPage/MatchMakingPage.js";
+import { GamePlayPage }  from "./Component/Pages/GamePlayPage/GamePlayPage.js";
 
 export {        Component,
                 LoadingPage,
@@ -25,6 +26,7 @@ export {        Component,
                 EditProfilePage,
                 PlayMenuPage,
                 MatchMakingPage,
+                GamePlayPage,
 };
 
 // Popup
