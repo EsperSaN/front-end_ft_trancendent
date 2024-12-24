@@ -57,7 +57,7 @@ export class GamePlayPage extends Component {
     
     function resizeCanvas(element) {
         let container = element.parentElement;
-        let targetAspectRatio = 2 / 1;
+        let targetAspectRatio = 800 / 400;
         
         let containerWidth = container.clientWidth;
         let containerHeight = container.clientHeight;
@@ -246,8 +246,12 @@ export class GamePlayPage extends Component {
                 if(e.key === "ArrowDown")
                 {
                     this.key.DOWN = true;
-                    // this.webSocketConnection.close()
+                    
                 }
+            });
+
+            document.addEventListener('popstate', () => {
+                this.webSocketConnection.close();
             });
     
             document.addEventListener('keyup', (e) => {
