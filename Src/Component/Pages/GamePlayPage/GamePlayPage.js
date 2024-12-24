@@ -47,8 +47,6 @@ export class GamePlayPage extends Component {
 
     function scaleValue(canvasToScaleIn, value)
     {
-        console.log(`canvas width : ${canvasToScaleIn.width} canvas height : ${canvasToScaleIn.height}`);
-        console.log(`value : ${value}`);
         let widthRatio = canvasToScaleIn.width / 800;
         let heightRatio = canvasToScaleIn.height / 400;
         let Drawratio = value * Math.min(widthRatio, heightRatio);
@@ -56,6 +54,7 @@ export class GamePlayPage extends Component {
     }
     
     function resizeCanvas(element) {
+        console.log(`element width : ${element.width} element height : ${element.height}`);
         let container = element.parentElement;
         let targetAspectRatio = 800 / 400;
         
@@ -91,6 +90,12 @@ export class GamePlayPage extends Component {
             this.radius = radius;
             this.color = color;
             this.image = image;
+            this.imageObj = new Image();
+            this.imageObj.src = this.image;
+            this.imageObj.onload = () => {
+                this.draw();
+            }
+            this.animationFrame = null;
         }
     
         draw()
@@ -98,18 +103,13 @@ export class GamePlayPage extends Component {
             let radToDraw = scaleValue(this.canvas, this.radius);
             let xToDraw = scaleValue(this.canvas, this.posX);
             let yToDraw = scaleValue(this.canvas, this.posY);
-            // this.ctx.beginPath();
-            let imageToDraw = new Image();
-            imageToDraw.src = this.image;
-            imageToDraw.onload = () => {
-                console.log(`image ${this.image} loaded`);
-                console.log(`x : ${xToDraw} y : ${yToDraw} rad : ${radToDraw}\n on canvas x : ${this.canvas.width} y : ${this.canvas.height}`);
-                this.ctx.drawImage(imageToDraw, xToDraw - radToDraw, yToDraw - radToDraw, (radToDraw  * 2) , (radToDraw  * 2 ) );
-            }
-            // this.ctx.arc(xToDraw, yToDraw, radToDraw, 0, Math.PI * 2); // full circle
-            // this.ctx.strokeStyle = this.color;
-            // this.ctx.lineWidth = 2;
-            // this.ctx.stroke();
+            console.log(`x : ${xToDraw} y : ${yToDraw} rad : ${radToDraw}`);
+            this.ctx.drawImage(this.imageObj, xToDraw - radToDraw, yToDraw - radToDraw, (radToDraw  * 2) , (radToDraw  * 2 ) );
+            this.ctx.beginPath();
+            this.ctx.arc(xToDraw, yToDraw, radToDraw, 0, Math.PI * 2);
+            this.ctx.strokeStyle = this.color;
+            this.ctx.lineWidth = 2;
+            this.ctx.stroke();
         }
     }
     
@@ -124,9 +124,10 @@ export class GamePlayPage extends Component {
             this.settingData = null;
             this.currentState = null;
             this.webSocketConnection = null;
-            // this.playerPicUrl = window.Images.getFile("player.png");
-            // this.opponentPicUrl = window.Images.getFile("opponent.png");
-            // this.ballPicUrl = window.Images.getFile("ball.png");
+            this.leftPaddle = null;
+            this.rightPaddle = null;
+            this.ball = null;
+
             this.init();
             this.key = {
                 "UP" : false,
@@ -159,43 +160,66 @@ export class GamePlayPage extends Component {
             this.putbutton();
         }
     
+        initGameAssets()
+        {
+            var playerPicUrl = window.Images.getFile("player.png");
+            var opponentPicUrl = window.Images.getFile("opponent.png");
+            var ballPicUrl = window.Images.getFile("ball.png");
+            this.leftPaddle = new CircleObject(this.canvas,
+                50, 
+                this.canvas.height / 2, 
+                this.settingData.paddleRadius, "red",
+                playerPicUrl
+            );
+            this.rightPaddle = new CircleObject(this.canvas,
+                this.canvas.width - 50, 
+                this.canvas.height / 2, 
+                this.settingData.paddleRadius, "blue",
+                opponentPicUrl
+            );
+            this.ball = new CircleObject(this.canvas, 
+                this.canvas.width / 2, 
+                this.canvas.height / 2, 
+                this.settingData.ballRadius, "green",
+                ballPicUrl
+            );
+            this.ball.draw();
+            this.leftPaddle.draw();
+            this.rightPaddle.draw();
+        }
+
         draw()
         {
-            var playerPicUrl = "Src/Images/file/player.png";
-            var ballPicUrl = "Src/Images/file/ball.png";
-            var opponentPicUrl = "Src/Images/file/player.png";
+
             if (this.currentState != null)
             {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                let leftPaddle = new CircleObject(this.canvas,
-                    this.currentState.paddles.left.x, 
-                    this.currentState.paddles.left.y, 
-                    this.currentState.paddles.left.radius, "red",
-                    playerPicUrl
-                );
-                let rightPaddle = new CircleObject(this.canvas,
-                    this.currentState.paddles.right.x, 
-                    this.currentState.paddles.right.y, 
-                    this.currentState.paddles.right.radius, "blue",
-                    opponentPicUrl
-                    );
-                let ball = new CircleObject(this.canvas, 
-                    this.currentState.ball.x , 
-                    this.currentState.ball.y , 
-                    this.currentState.ball.radius, "green",
-                    ballPicUrl);
                 this.ctx.lineWidth = 2;
                 this.ctx.strokeStyle = "black";
+                this.ball.posX = this.currentState.ball.x;
+                this.ball.posY = this.currentState.ball.y;
+                this.leftPaddle.posY = this.currentState.paddles.left.y;
+                this.leftPaddle.posX = this.currentState.paddles.left.x;
+                this.rightPaddle.posY = this.currentState.paddles.right.y;
+                this.rightPaddle.posX = this.currentState.paddles.right.x;
                 this.ctx.beginPath();
                 this.ctx.moveTo(this.canvas.width / 2, 0);
                 this.ctx.lineTo(this.canvas.width / 2, this.canvas.height);
                 this.ctx.stroke();
-                leftPaddle.draw();
-                rightPaddle.draw();
-                ball.draw();
+                this.leftPaddle.draw();
+                this.rightPaddle.draw();
+                this.ball.draw();
             }
         }
     
+        cleanUpGame()
+        {
+            this.webSocketConnection.onmessage = function() {}
+            this.webSocketConnection.onclose = function() {}
+            this.webSocketConnection.close();
+            cancelAnimationFrame(this.animationFrame);
+        }
+
         setUpWebsocket()
         {
             this.webSocketConnection = new WebSocket(`ws://127.0.0.1:25566/ws/matchmaking/`);
@@ -205,11 +229,18 @@ export class GamePlayPage extends Component {
             this.webSocketConnection.onmessage = (e) => {
                 let recieveData =  JSON.parse(e.data);
                 this.dataBox.innerHTML = e.data + "\nKey up : " + this.key.UP+ "\nKey Down : " + this.key.DOWN;
+
+                if (recieveData.type === "player_disconnected") {
+                    this.cleanUpGame();
+                    console.log("Player Disconnected You Win");
+                }
+
                 if (recieveData.type === "connected") {
 
                 }
                 if (recieveData.type === "game_setting") {
                     this.settingData = recieveData.setting;
+                    this.initGameAssets();
                 }
                 if (recieveData.type === "queue_ready") {
                 }
@@ -246,7 +277,6 @@ export class GamePlayPage extends Component {
                 if(e.key === "ArrowDown")
                 {
                     this.key.DOWN = true;
-                    
                 }
             });
 
@@ -280,11 +310,14 @@ export class GamePlayPage extends Component {
                 "inputs": this.key
             }));
             this.draw();
-            requestAnimationFrame(this.run.bind(this));
+            this.animationFrame = requestAnimationFrame(this.run.bind(this));
         }
     }
     
     let pongGame = new PongGame('pong','pong-game');
+    window.addEventListener('resize', () => {
+        resizeCanvas(pongGame.canvas);
+    });
   }
 
 }
