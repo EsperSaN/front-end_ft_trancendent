@@ -130,6 +130,39 @@ const componentStyle = `
     flex-shrink: 0;
     margin-bottom: 60px;
 }
+
+#profileFriendContainer {
+    margin: 20px;
+    height: 30%;
+}
+
+#profileFriendContainer li {
+    width: 90%;
+}
+
+.mini-profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    aspect-ratio: 1 / 1;
+}
+
+.mini-profile img {
+    height: 80%;
+    aspect-ratio: 1 / 1;
+}
+
+.mini-profile-text {
+    font-size: 20px
+}
+
+.dot {
+    height: 15px;
+    aspect-ratio: 1 / 1;
+    place-content: center;
+}
+
 `;
 
 export class GameMenuPage extends Component { 
@@ -165,10 +198,57 @@ export class GameMenuPage extends Component {
             </ul>
             <div id = "profileLine"></div>
             <div id = "profileFriendTiTle">Friend list</div>
-            <ul id = "profileFriendListTiTle">
-                <li> <div>win rate</div>    <i class="bi bi-chat-dots">1</i> </li>
-                <li> <div>Total Game</div>  <i class="bi bi-chat-dots">1</i> </li>
-                <li> <div>Rank</div>        <i class="bi bi-chat-dots">1</i> </li>
+            <ul id = "profileFriendContainer" class = "overflow-auto">
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-danger bg-gradient rounded-circle dot me-2"></div> offline </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
             </ul>
         </div>
     </div>

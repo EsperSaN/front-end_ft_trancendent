@@ -27,7 +27,7 @@ const componentStyle = `
   }
 
   .profile-Block {
-      max-width: 20%;
+      max-width: 23%;
       height: auto;
       display:  flex;
       flex-direction: column;
@@ -128,6 +128,109 @@ const componentStyle = `
       margin-bottom: 2.5%;
   }
 
+    .mini-profile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 90%;
+        aspect-ratio: 1 / 1;
+    }
+
+    .mini-profile img {
+        height: 80%;
+        aspect-ratio: 1 / 1;
+    }
+
+    #profileFriendContainer {
+        margin: 20px;
+        height: 30%;
+    }
+
+    #profileFriendContainer li {
+        width: 95%;
+    }
+
+    .mini-profile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 90%;
+        aspect-ratio: 1 / 1;
+    }
+
+    .mini-profile img {
+        height: 80%;
+        aspect-ratio: 1 / 1;
+    }
+
+    .mini-profile-text {
+        font-size: 20px
+    }
+
+    .dot {
+        height: 15px;
+        aspect-ratio: 1 / 1;
+        place-content: center;
+    }
+
+    #match-history-container {
+        width: 90%;
+    }
+
+    #match-history-container li {
+        margin-bottom: 3%;
+    }
+
+    #match-history-card {
+        height: 75px;
+        width: 100%;
+        padding: 0% 1% 0% 5%;
+    }
+
+    #profile-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80%;
+        padding: 3px;
+        background-color: rgb(233, 182, 182);
+    }
+
+    .profile-card-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 90%;
+        aspect-ratio: 1 / 1;
+    }
+
+    .profile-card-image img {
+        height: 80%;
+        aspect-ratio: 1 / 1;
+    }
+
+    #match-date div {
+        font-size: 1.25em;
+        font-weight: bold;
+    }
+
+    #profile-name {
+        font-size: 1.25em;
+        font-weight: bold;
+    }
+
+    #match-result {
+        font-size: 1.25em;
+        font-weight: bold;
+        color: rgb(76, 146, 67);
+    }
+
+    .history-block h1 {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
 `;
 
 export class PlayMenuPage extends Component { 
@@ -159,16 +262,249 @@ export class PlayMenuPage extends Component {
           </ul>
           <div id = "profileLine"></div>
           <div id = "profileFriendTiTle">Friend list</div>
-          <ul id = "profileFriendListTiTle">
-              <li> <div>win rate</div>    <i class="bi bi-chat-dots">1</i> </li>
-              <li> <div>Total Game</div>  <i class="bi bi-chat-dots">1</i> </li>
-              <li> <div>Rank</div>        <i class="bi bi-chat-dots">1</i> </li>
-          </ul>
+            <ul id = "profileFriendContainer" class = "overflow-auto">
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+                <li class = "container bg-light h-25 rounded d-flex align-items-center justify-content-between">
+                    <div class = "mini-profile bg-secondary bg-gradient rounded-circle"> 
+                        <img src=${default_profile}> 
+                    </div>
+                    <div class = "d-flex flex-column justify-content-center align-items-start"> 
+                        <div class="mini-profile-text mb-1"> profile name </div>
+                        <div class="d-flex justify-content-start align-items-center mini-profile-text"> <div class="bg-success bg-gradient rounded-circle dot me-2"></div> online </div>
+                    </div>
+                    <span class="bi bi-person-plus"></span>
+                </li>
+            </ul>
       </div>
 
       <div class ="history-block">
-          <h1> Match History </h1>
-          <div class="overflow-auto">Match History List</div>
+
+            <h1> Match History </h1>
+
+            <ul id = "match-history-container" class = "container overflow-auto">
+
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+                <li id = "match-history-card" class = "rounded d-flex align-items-center justify-content-between bg-light">
+                    <div id="match-result" class = "ms-2">
+                        WIN 3-1
+                    </div>
+                    
+                    <div id="match-date">
+                        <div> 03/01/2025 </div>
+                        <div> 12:00 </div>
+                    </div>                    
+                    <div id="profile-card" class="rounded">
+                        <div class = "profile-card-image bg-secondary bg-gradient rounded-circle m-1"> 
+                            <img src=${default_profile}>
+                        </div>
+                        <div id="profile-name" class = "m-1">
+                            profile name
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+            
       </div>
 
       <div class ="menu-block">
